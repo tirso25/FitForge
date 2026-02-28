@@ -9,7 +9,7 @@ html, body {
     background-color: #1e293b;
     color: #ffffff;
     scroll-behavior: smooth;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 /* ── Custom Scrollbar (global) ─────────────────── */
@@ -52,11 +52,11 @@ html, body {
     width: 100%;
     padding: 20px;
     padding-top: max(20px, env(safe-area-inset-top));
-    padding-bottom: max(20px, env(safe-area-inset-bottom));
+    padding-bottom: max(80px, env(safe-area-inset-bottom));
     padding-left: max(16px, env(safe-area-inset-left));
     padding-right: max(16px, env(safe-area-inset-right));
     box-sizing: border-box;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 main {
@@ -65,8 +65,7 @@ main {
     justify-content: center;
     align-items: center;
     width: 100%;
-    min-height: 100vh;
-    min-height: 100dvh;
+    flex: 1;
 }
 
 /* ── Tarjeta principal ─────────────────────────── */
