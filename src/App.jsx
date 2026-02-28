@@ -25,9 +25,6 @@ function App() {
                 setIsProfileComplete(profileRes.ok);
             }
 
-            // Se establece al final para que isAuthenticated === null sirva
-            // como estado de carga hasta tener toda la información del perfil.
-            // Así se evita el flash de /profile al refrescar /ai.
             setIsAuthenticated(authOk);
         } catch (error) {
             console.error('Error verifying session:', error);
