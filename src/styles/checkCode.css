@@ -409,7 +409,7 @@ form button[type="submit"].loading {
         border-radius: 14px;
     }
 
-    #content2 {
+        #checkCode #content2 {
         flex-direction: column;
         gap: 8px;
     }
