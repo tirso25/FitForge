@@ -12,7 +12,7 @@ import "../styles/login.css";
 const emailRegex = /^[a-zA-Z0-9][a-zA-Z0-9._%+-]*[a-zA-Z0-9]@[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
 const usernameRegex = /^(?![._-])(?!.*[._-]{2})[a-z0-9._-]{5,20}(?<![._-])$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()_+=\-\[\]{};:,.<>])[A-Za-z\d@$!%*?&#^()_+=\-\[\]{};:,.<>]{8,128}$/;
-const API_BASE_URL = 'http://localhost:4000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
 
 export default function Login(props) {
     const navigate = useNavigate();

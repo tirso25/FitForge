@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import confetti from "canvas-confetti";
 import { Notyf } from "notyf";
-import CryptoJS from "crypto-js";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import useTTS from "../hooks/useTTS.js";
 import "notyf/notyf.min.css";
@@ -13,7 +12,7 @@ import "../styles/signIn.css";
 const emailRegex = /^[a-zA-Z0-9][a-zA-Z0-9._%+-]*[a-zA-Z0-9]@[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/;
 const usernameRegex = /^(?![._-])(?!.*[._-]{2})[a-z0-9._-]{5,20}(?<![._-])$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()_+=\-\[\]{};:,.<>])[A-Za-z\d@$!%*?&#^()_+=\-\[\]{};:,.<>]{8,128}$/;
-const API_BASE_URL = 'http://localhost:4000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
 
 export default function SignIn() {
     const navigate = useNavigate();
@@ -59,18 +58,7 @@ export default function SignIn() {
                 showSuccessMessage("Authentication successful");
 
                 setTimeout(() => {
-                    const randomKey = generateRandomKey();
-                    const encrypted = CryptoJS.AES.encrypt(email, randomKey).toString();
-                    const urlSafeData = encodeForURL(encrypted);
-                    const urlSafeKey = encodeForURL(randomKey);
-
-                    navigate('/CheckEmail', {
-                        state: {
-                            email: urlSafeData,
-                            key: urlSafeKey,
-                            type: 'changePassword',
-                        }
-                    });
+                    navigate(`/changePassword?email=${encodeURIComponent(email)}`);
                 }, 1700);
             }
         }
@@ -367,18 +355,7 @@ export default function SignIn() {
         }
     };
 
-    const generateRandomKey = (length = 32) => {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
-        let result = '';
-        for (let i = 0; i < length; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return result;
-    };
 
-    const encodeForURL = (text) => {
-        return btoa(text).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
-    };
 
     const signin = async () => {
         try {
@@ -435,20 +412,7 @@ export default function SignIn() {
             });
 
             setTimeout(() => {
-                if (emailRef.current) {
-                    const randomKey = generateRandomKey();
-                    const encrypted = CryptoJS.AES.encrypt(emailRef.current.value, randomKey).toString();
-                    const urlSafeData = encodeForURL(encrypted);
-                    const urlSafeKey = encodeForURL(randomKey);
-
-                    const params = new URLSearchParams({
-                        email: urlSafeData,
-                        key: urlSafeKey,
-                        type: 'activateAccount'
-                    });
-
-                    navigate(`/CheckEmail?${params.toString()}`);
-                }
+                navigate(`/checkCode?e=${encodeURIComponent(message.encryptedEmail)}`);
             }, 2000);
         } catch (error) {
             console.error("Error:", error);

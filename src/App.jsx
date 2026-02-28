@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import CheckEmail from './components/CheckEmail.jsx';
+
 import ChangePassword from "./components/ChangePassword.jsx";
 import Login from './components/Login.jsx';
 import SignIn from './components/SignIn.jsx';
@@ -70,7 +70,7 @@ function App() {
             <main>
                 <Routes>
                     {/* Rutas públicas del flujo de registro/verificación */}
-                    <Route path="/checkEmail" element={<CheckEmail />} />
+
                     <Route path="/changePassword" element={<ChangePassword />} />
                     <Route path="/signIn" element={<SignIn />} />
                     <Route path="/checkCode" element={<CheckCode />} />

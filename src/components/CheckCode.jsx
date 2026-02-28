@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import confetti from "canvas-confetti";
 import { Notyf } from "notyf";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
@@ -10,10 +10,16 @@ import "../styles/general.css";
 import "../styles/checkCode.css";
 
 const codeRegex = /^[0-9]{6}$/;
-const API_BASE_URL = 'http://localhost:4000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
 
 export default function CheckCode() {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const eParam = searchParams.get('e');
+    const cParam = searchParams.get('c');
+
+    const [email, setEmail] = useState(null);
+
     const formRef = useRef(null);
     const checkCodeRef = useRef(null);
     const sendCodeButtonRef = useRef(null);
@@ -24,20 +30,89 @@ export default function CheckCode() {
     const [allRight, setAllRight] = useState(false);
     const [alreadyCelebrated, setAlreadyCelebrated] = useState(false);
     const [status, setStatus] = useState('idle');
+    const [resending, setResending] = useState(false);
     const isLoading = status === 'loading';
     const isSuccess = status === 'success';
     const isError = status === 'error';
 
     useTTS(speakBtnRef, rulesContainerRef);
 
+    // On mount: check user status + auto-fill code from email link
     useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const checkCodeParam = params.get("checkCode");
-        if (checkCodeParam && checkCodeRef.current) {
-            checkCodeRef.current.value = checkCodeParam;
-            validateInput({ target: checkCodeRef.current });
+        if (!eParam) {
+            navigate('/login', { replace: true });
+            return;
         }
-    }, []);
+
+        const init = async () => {
+            let plainEmail = '';
+
+            // Decrypt email from encrypted URL param
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/auth/decryptData`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ encrypted: eParam }),
+                });
+                const data = await res.json();
+
+                if (res.ok && data.decrypted) {
+                    plainEmail = data.decrypted;
+                    setEmail(plainEmail);
+                } else {
+                    navigate('/login', { replace: true });
+                    return;
+                }
+            } catch {
+                navigate('/login', { replace: true });
+                return;
+            }
+
+            // Check user status
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/auth/checkStatus`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: plainEmail }),
+                });
+                const data = await res.json();
+
+                if (!res.ok || data.status !== 'pending') {
+                    navigate('/login', { replace: true });
+                    return;
+                }
+            } catch {
+                navigate('/login', { replace: true });
+                return;
+            }
+
+            // Auto-fill code from encrypted URL param
+            if (cParam && checkCodeRef.current) {
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/auth/decryptData`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ encrypted: cParam }),
+                    });
+                    const data = await res.json();
+
+                    if (res.ok && data.decrypted) {
+                        checkCodeRef.current.value = data.decrypted;
+                        // Trigger validation
+                        const event = new Event('input', { bubbles: true });
+                        checkCodeRef.current.dispatchEvent(event);
+                        validateInput({ target: checkCodeRef.current });
+                    }
+                } catch {
+                    // Ignore — user can still type manually
+                }
+            }
+        };
+
+        if (eParam && !email) {
+            init();
+        }
+    }, [eParam, cParam, email, navigate]);
 
     useEffect(() => {
         if (!sendCodeButtonRef.current) return;
@@ -106,20 +181,6 @@ export default function CheckCode() {
         updateButtonStyles(newAllRight);
     };
 
-    const validateData = (data) => {
-        if (!data.verificationCode) {
-            showErrorMessage('Invalid data');
-            return false;
-        }
-
-        if (!codeRegex.test(data.verificationCode)) {
-            showErrorMessage('Invalid verification code format');
-            return false;
-        }
-
-        return true;
-    }
-
     const updateButtonStyles = (isValid) => {
         if (sendCodeButtonRef.current && status !== 'loading') {
             sendCodeButtonRef.current.disabled = !isValid;
@@ -147,24 +208,19 @@ export default function CheckCode() {
 
     const checkCode = async () => {
         try {
-            const data = {
-                verificationCode: checkCodeRef.current.value
-            };
+            const code = checkCodeRef.current.value.trim();
 
-            if (!validateData(data)) {
+            if (!codeRegex.test(code)) {
+                showErrorMessage('Invalid code format');
                 return;
             }
 
             setStatus('loading');
 
-            const response = await fetch(`${API_BASE_URL}/api/auth/verifyCode`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token') || ''}`
-                },
-                credentials: "include",
-                body: JSON.stringify({ code: data.verificationCode })
+            const response = await fetch(`${API_BASE_URL}/api/auth/checkCode`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, code })
             });
 
             const message = await response.json();
@@ -216,6 +272,48 @@ export default function CheckCode() {
             });
 
             setTimeout(() => setStatus('idle'), 2000);
+        }
+    };
+
+    const resendEmail = async () => {
+        if (resending) return;
+        setResending(true);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/auth/sendEmail`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email })
+            });
+
+            const data = await response.json();
+            const notyf = new Notyf();
+
+            if (response.ok) {
+                notyf.success({
+                    message: data.message || 'Email sent!',
+                    duration: 3000,
+                    dismissible: true,
+                    position: { x: 'right', y: 'top' },
+                });
+            } else {
+                notyf.error({
+                    message: data.message || 'Failed to resend email',
+                    duration: 4000,
+                    dismissible: true,
+                    position: { x: 'right', y: 'top' },
+                });
+            }
+        } catch {
+            const notyf = new Notyf();
+            notyf.error({
+                message: "Network error while resending email.",
+                duration: 4000,
+                dismissible: true,
+                position: { x: 'right', y: 'top' },
+            });
+        } finally {
+            setTimeout(() => setResending(false), 5000);
         }
     };
 
@@ -276,7 +374,7 @@ export default function CheckCode() {
             <fieldset id="checkCode">
                 <form id="checkCodeForm" ref={formRef} onSubmit={handleSubmit}>
                     <div id="content1">
-                        <label htmlFor="check_code">Code</label>
+                        <label htmlFor="check_code">Verification Code</label>
                         <input
                             type="text"
                             id="check_code"
@@ -311,7 +409,28 @@ export default function CheckCode() {
                             id="send_code"
                             ref={sendCodeButtonRef}
                         >
-                            {isLoading ? <LottieAnimation /> : "Check"}
+                            {isLoading ? <LottieAnimation /> : "Verify"}
+                        </button>
+                        <button
+                            type="button"
+                            className="resend-btn"
+                            onClick={resendEmail}
+                            disabled={resending}
+                            style={{
+                                marginTop: '12px',
+                                background: 'transparent',
+                                border: '1px solid rgba(96, 165, 250, 0.3)',
+                                color: '#60a5fa',
+                                padding: '10px 20px',
+                                borderRadius: '8px',
+                                cursor: resending ? 'not-allowed' : 'pointer',
+                                fontSize: '14px',
+                                opacity: resending ? 0.5 : 1,
+                                transition: 'all 0.3s ease',
+                                width: '100%',
+                            }}
+                        >
+                            {resending ? "Email sent..." : "Resend verification email"}
                         </button>
                     </div>
                 </form>
