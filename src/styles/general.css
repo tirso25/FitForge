@@ -360,7 +360,7 @@ a.button:hover {
     }
 
     #content2 {
-        flex-direction: column;
+        flex-direction: column-reverse;
         gap: 8px;
     }
 

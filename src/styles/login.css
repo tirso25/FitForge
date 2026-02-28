@@ -611,7 +611,7 @@ form button[type="submit"].enabled {
             align-self: flex-start;
         }
     #content2 {
-        flex-direction: column;
+        flex-direction: column-reverse;
         gap: 10px;
     }
 
