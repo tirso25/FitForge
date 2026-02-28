@@ -2,8 +2,14 @@
     box-sizing: border-box;
 }
 
-html, body {
+html {
     height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100%;
     margin: 0;
     padding: 0;
     background-color: #1e293b;
@@ -45,7 +51,6 @@ html, body {
 #root {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     min-height: 100vh;
     min-height: 100dvh;
@@ -56,7 +61,6 @@ html, body {
     padding-left: max(16px, env(safe-area-inset-left));
     padding-right: max(16px, env(safe-area-inset-right));
     box-sizing: border-box;
-    overflow-x: hidden;
 }
 
 main {
@@ -348,8 +352,7 @@ a.button:hover {
 ══════════════════════════════════════════════════ */
 @media (max-width: 480px) {
     #root {
-        justify-content: flex-start;
-        padding-top: max(24px, env(safe-area-inset-top));
+        padding-top: max(16px, env(safe-area-inset-top));
     }
 
     #checkCode {
