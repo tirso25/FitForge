@@ -1,0 +1,709 @@
+/* ══════════════════════════════════════════════════
+   AI TRAINER — LIQUID GLASS REDESIGN
+══════════════════════════════════════════════════ */
+
+.ai-trainer-container * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ── Contenedor principal ──────────────────────── */
+.ai-trainer-container {
+    font-family: "Poppins", sans-serif;
+    background-color: #1e293b;
+    color: #ffffff;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-bottom: max(80px, env(safe-area-inset-bottom));
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ── Ambient light blobs ──────────────────────── */
+.ai-trainer-container::before,
+.ai-trainer-container::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.12;
+    pointer-events: none;
+    animation: ambientFloat 12s ease-in-out infinite alternate;
+}
+
+.ai-trainer-container::before {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, #3b82f6, transparent 70%);
+    top: -100px;
+    right: -100px;
+}
+
+.ai-trainer-container::after {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, #8b5cf6, transparent 70%);
+    bottom: -80px;
+    left: -80px;
+    animation-delay: -6s;
+}
+
+@keyframes ambientFloat {
+    0%   { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(30px, -20px) scale(1.1); }
+}
+
+/* ── Tarjeta del chat (Liquid Glass) ─────────── */
+.ai-trainer-container .container {
+    width: 90%;
+    max-width: 520px;
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(28px) saturate(1.5);
+    -webkit-backdrop-filter: blur(28px) saturate(1.5);
+    border-radius: 20px;
+    padding: 22px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.3),
+        0 1px 0 rgba(255, 255, 255, 0.05) inset;
+    height: 80vh;
+    height: 80dvh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-sizing: border-box;
+    z-index: 1;
+    animation: containerEntry 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes containerEntry {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ── Cabecera ──────────────────────────────────── */
+.ai-trainer-container .header {
+    text-align: center;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    flex-shrink: 0;
+}
+
+.ai-trainer-container .header h1 {
+    font-size: 1.6em;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+    background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.ai-trainer-container .header p {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 400;
+}
+
+/* ── Mensajes ──────────────────────────────────── */
+.ai-trainer-container .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 2px;
+    scroll-behavior: smooth;
+    margin-bottom: 10px;
+    min-height: 0;
+    position: relative;
+}
+
+.ai-trainer-container .chat-messages::-webkit-scrollbar {
+    width: 4px;
+}
+
+.ai-trainer-container .chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.ai-trainer-container .chat-messages::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.2);
+    border-radius: 4px;
+}
+
+.ai-trainer-container .chat-messages::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.35);
+}
+
+.ai-trainer-container .message {
+    margin-bottom: 10px;
+    padding: 12px 16px;
+    max-width: 85%;
+    word-wrap: break-word;
+    word-break: break-word;
+    font-size: 13.5px;
+    line-height: 1.6;
+    animation: msgSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+    position: relative;
+}
+
+@keyframes msgSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.96);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ── Mensajes del usuario ──────────────────────── */
+.ai-trainer-container .message.user {
+    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+    color: white;
+    margin-left: auto;
+    border-radius: 16px 16px 4px 16px;
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
+}
+
+/* ── Mensajes del bot (Liquid Glass) ──────────── */
+.ai-trainer-container .message.bot {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #e2e8f0;
+    margin-right: auto;
+    border: 1px solid rgba(148, 163, 184, 0.08);
+    border-radius: 16px 16px 16px 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ai-trainer-container .welcome-message {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #e2e8f0;
+    margin-right: auto;
+    border: 1px solid rgba(148, 163, 184, 0.08);
+    border-radius: 16px 16px 16px 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ai-trainer-container .welcome-message strong { color: #60a5fa; }
+.ai-trainer-container .welcome-message em { color: #94a3b8; font-style: normal; }
+
+/* ── Indicador de escritura ────────────────────── */
+.ai-trainer-container .typing-indicator {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #94a3b8;
+    margin-right: auto;
+    max-width: 70px;
+    padding: 14px 18px;
+    border-radius: 16px 16px 16px 4px;
+    border: 1px solid rgba(148, 163, 184, 0.08);
+    margin-bottom: 10px;
+    animation: msgSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.ai-trainer-container .typing-dots {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.ai-trainer-container .typing-dot {
+    width: 7px;
+    height: 7px;
+    background: linear-gradient(135deg, #60a5fa, #818cf8);
+    border-radius: 50%;
+    animation: typingBounce 1.4s infinite ease-in-out;
+}
+
+.ai-trainer-container .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+.ai-trainer-container .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typingBounce {
+    0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
+    40%            { transform: scale(1); opacity: 1; }
+}
+
+/* ── Área de entrada ───────────────────────────── */
+.ai-trainer-container .input-section {
+    border-top: 1px solid rgba(148, 163, 184, 0.08);
+    padding-top: 14px;
+    margin-top: auto;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ai-trainer-container .examples-title {
+    font-size: 11px;
+    color: #64748b;
+    margin-bottom: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.ai-trainer-container .example-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.ai-trainer-container .example-pill {
+    padding: 6px 14px;
+    background: rgba(148, 163, 184, 0.06);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 11px;
+    color: #94a3b8;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.ai-trainer-container .example-pill:hover {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: white;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+}
+
+.ai-trainer-container .example-pill:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.ai-trainer-container .input-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+/* ── Textarea de input (Liquid Glass) ──────────── */
+.ai-trainer-container .message-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    border-radius: 14px;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #e2e8f0;
+    font-size: 13.5px;
+    font-family: "Poppins", sans-serif;
+    resize: none;
+    min-height: 44px;
+    max-height: 100px;
+    overflow-y: auto;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ai-trainer-container .message-input:focus {
+    border-color: rgba(99, 102, 241, 0.4);
+    box-shadow:
+        0 0 0 3px rgba(99, 102, 241, 0.08),
+        0 0 20px rgba(99, 102, 241, 0.06);
+}
+
+.ai-trainer-container .message-input::placeholder {
+    color: #475569;
+}
+
+.ai-trainer-container .buttons-container {
+    display: flex;
+    gap: 6px;
+    align-items: flex-end;
+    flex-shrink: 0;
+}
+
+/* ── Botones de acción (Liquid Glass) ─────────── */
+.ai-trainer-container .send-button,
+.ai-trainer-container .clear-button,
+.ai-trainer-container .mic-button {
+    padding: 0;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Shimmer effect on hover */
+.ai-trainer-container .send-button::after,
+.ai-trainer-container .mic-button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.08) 50%,
+        transparent 70%
+    );
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+}
+
+.ai-trainer-container .send-button:hover::after,
+.ai-trainer-container .mic-button:hover::after {
+    transform: translateX(100%);
+}
+
+/* Send button */
+.ai-trainer-container .send-button {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25);
+}
+
+.ai-trainer-container .send-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35);
+}
+
+.ai-trainer-container .send-button:active:not(:disabled) {
+    transform: translateY(0) scale(0.95);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+}
+
+.ai-trainer-container .send-button:disabled {
+    background: rgba(71, 85, 105, 0.5);
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+/* Clear button */
+.ai-trainer-container .clear-button {
+    background: rgba(100, 116, 139, 0.15);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    color: #94a3b8;
+}
+
+.ai-trainer-container .clear-button:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    transform: translateY(-2px);
+}
+
+.ai-trainer-container .clear-button:active {
+    transform: translateY(0) scale(0.95);
+}
+
+/* Mic button */
+.ai-trainer-container .mic-button {
+    background: linear-gradient(135deg, #10b981, #059669);
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+}
+
+.ai-trainer-container .mic-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.ai-trainer-container .mic-button:active:not(:disabled) {
+    transform: translateY(0) scale(0.95);
+}
+
+.ai-trainer-container .mic-button.recording {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    box-shadow: 0 4px 20px rgba(239, 68, 68, 0.35);
+    animation: recordPulse 2s infinite;
+}
+
+.ai-trainer-container .mic-button.recording:hover {
+    box-shadow: 0 6px 24px rgba(239, 68, 68, 0.45);
+}
+
+@keyframes recordPulse {
+    0%, 100% { box-shadow: 0 4px 20px rgba(239, 68, 68, 0.35); }
+    50%      { box-shadow: 0 4px 30px rgba(239, 68, 68, 0.55); }
+}
+
+.ai-trainer-container .send-button .material-symbols-outlined,
+.ai-trainer-container .clear-button .material-symbols-outlined,
+.ai-trainer-container .mic-button .material-symbols-outlined {
+    font-size: 20px;
+    font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20;
+}
+
+/* ── Badge de estado (Liquid Glass) ───────────── */
+.ai-trainer-container .status {
+    position: fixed;
+    top: max(16px, env(safe-area-inset-top));
+    right: max(16px, env(safe-area-inset-right));
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    z-index: 1000;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    animation: statusEntry 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes statusEntry {
+    from { opacity: 0; transform: translateY(-10px) scale(0.9); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.ai-trainer-container .status.online {
+    background: rgba(16, 185, 129, 0.2);
+    color: #6ee7b7;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.1);
+}
+
+.ai-trainer-container .status.thinking {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fcd34d;
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.1);
+    animation: statusEntry 0.5s cubic-bezier(0.16, 1, 0.3, 1) both, thinkingPulse 2s infinite;
+}
+
+@keyframes thinkingPulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.7; }
+}
+
+.ai-trainer-container .status.error {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.1);
+}
+
+/* ── Spinner ───────────────────────────────────── */
+.ai-trainer-container .loading-spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 0.8s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE — 600 px
+══════════════════════════════════════════════════ */
+@media (max-width: 600px) {
+    .ai-trainer-container .container {
+        width: 100%;    
+        height: 88vh;
+        height: 88dvh;
+        padding: 16px 14px;
+        border-radius: 16px;
+    }
+
+    .ai-trainer-container .header h1 {
+        font-size: 1.4em;
+    }
+
+    .ai-trainer-container .message {
+        max-width: 92%;
+        font-size: 13px;
+    }
+
+    .ai-trainer-container .example-pill {
+        font-size: 10px;
+        padding: 5px 12px;
+    }
+}
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE — 480 px
+══════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+    .ai-trainer-container {
+        padding: 0;
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: max(70px, env(safe-area-inset-bottom));
+        justify-content: stretch;
+    }
+
+    .ai-trainer-container::before,
+    .ai-trainer-container::after {
+        opacity: 0.08;
+    }
+
+    .ai-trainer-container .container {
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        border-radius: 0;
+        padding: 14px 12px;
+        padding-top: max(14px, env(safe-area-inset-top));
+        padding-bottom: max(14px, env(safe-area-inset-bottom));
+        border: none;
+        background: rgba(30, 41, 59, 0.7);
+    }
+
+    .ai-trainer-container .header {
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+    }
+
+    .ai-trainer-container .header h1 {
+        font-size: 1.25em;
+    }
+
+    .ai-trainer-container .message {
+        max-width: 95%;
+        font-size: 13px;
+        padding: 10px 14px;
+    }
+
+    .ai-trainer-container .input-row {
+        gap: 6px;
+    }
+
+    .ai-trainer-container .buttons-container {
+        gap: 4px;
+    }
+
+    .ai-trainer-container .send-button,
+    .ai-trainer-container .clear-button,
+    .ai-trainer-container .mic-button {
+        min-width: 38px;
+        height: 38px;
+        border-radius: 10px;
+    }
+
+    .ai-trainer-container .send-button .material-symbols-outlined,
+    .ai-trainer-container .clear-button .material-symbols-outlined,
+    .ai-trainer-container .mic-button .material-symbols-outlined {
+        font-size: 18px;
+    }
+
+    .ai-trainer-container .message-input {
+        font-size: 13px;
+        padding: 10px 14px;
+        min-height: 40px;
+        border-radius: 12px;
+    }
+
+    .ai-trainer-container .example-pill {
+        font-size: 10px;
+        padding: 5px 10px;
+    }
+
+    .ai-trainer-container .status {
+        font-size: 11px;
+        padding: 5px 12px;
+        top: max(10px, env(safe-area-inset-top));
+        right: max(10px, env(safe-area-inset-right));
+    }
+
+    .ai-trainer-container .input-section {
+        gap: 8px;
+        padding-top: 10px;
+    }
+}
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE — 375 px
+══════════════════════════════════════════════════ */
+@media (max-width: 375px) {
+    .ai-trainer-container .header h1 {
+        font-size: 1.15em;
+    }
+
+    .ai-trainer-container .message {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+
+    .ai-trainer-container .example-pills {
+        gap: 4px;
+    }
+
+    .ai-trainer-container .example-pill {
+        font-size: 9px;
+        padding: 4px 9px;
+    }
+
+    .ai-trainer-container .message-input {
+        font-size: 12px;
+    }
+
+    .ai-trainer-container .send-button,
+    .ai-trainer-container .clear-button,
+    .ai-trainer-container .mic-button {
+        min-width: 36px;
+        height: 36px;
+    }
+}
+
+/* ══════════════════════════════════════════════════
+   RESPONSIVE — 320 px
+══════════════════════════════════════════════════ */
+@media (max-width: 320px) {
+    .ai-trainer-container .container {
+        padding: 12px 10px;
+        padding-top: max(12px, env(safe-area-inset-top));
+        padding-bottom: max(12px, env(safe-area-inset-bottom));
+    }
+
+    .ai-trainer-container .header h1 {
+        font-size: 1.05em;
+    }
+
+    .ai-trainer-container .examples-title {
+        font-size: 10px;
+    }
+
+    .ai-trainer-container .example-pill {
+        font-size: 9px;
+        padding: 3px 7px;
+    }
+}
