@@ -49,6 +49,8 @@ export default function NavBar({ onLogout }) {
         } catch {
             // Aunque falle, limpiamos sesión
         } finally {
+            localStorage.removeItem('jwt_token');
+            localStorage.removeItem('userData');
             if (onLogout) onLogout();
             navigate('/login', { replace: true });
         }

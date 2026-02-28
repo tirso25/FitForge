@@ -14,6 +14,8 @@ export default function LogoutButton({ className = '', style = {} }) {
         } catch {
             // Aunque falle, limpiamos sesión en el cliente
         } finally {
+            localStorage.removeItem('jwt_token');
+            localStorage.removeItem('userData');
             navigate('/login', { replace: true });
         }
     };
