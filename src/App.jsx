@@ -8,6 +8,7 @@ import CheckCode from './components/CheckCode.jsx';
 import CheckEmail from './components/CheckEmail.jsx';
 import AI from "./components/Ai.jsx";
 import Profile from './components/Profile.jsx';
+import UserProfile from './components/UserProfile.jsx';
 import NavBar from './components/NavBar.jsx';
 import { apiFetch } from './utils/api';
 import '../index.css';
@@ -86,6 +87,9 @@ function App() {
                     {/* Rutas protegidas: requieren auth + perfil completo */}
                     <Route path="/ai" element={
                         <ProtectedRoute><AI /></ProtectedRoute>
+                    } />
+                    <Route path="/user-profile" element={
+                        <ProtectedRoute><UserProfile /></ProtectedRoute>
                     } />
 
                     {/* Ruta de perfil: solo accesible si no tienes perfil relleno */}

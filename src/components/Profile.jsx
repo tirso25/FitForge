@@ -71,22 +71,16 @@ export default function Profile({ onProfileUpdate }) {
 
     const LottieAnimation = () => (
         <div style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            pointerEvents: 'none',
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
+            position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+            pointerEvents: 'none', width: '100%', height: '100%', display: 'flex',
+            alignItems: 'center', justifyContent: 'center',
+            maxWidth: '150px', maxHeight: '150px', overflow: 'hidden'
         }}>
             <DotLottieReact
                 src="/animations/loading.lottie"
                 loop
                 autoplay
-                style={{ width: '80%', height: '80%' }}
+                style={{ width: '100%', height: '100%' }}
             />
         </div>
     );

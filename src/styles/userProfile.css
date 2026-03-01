@@ -1,0 +1,182 @@
+/* userProfile.css */
+.user-profile-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh;
+    padding: 20px 20px 80px 20px; /* Extra bottom padding to clear navbar */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.profile-card {
+    width: 100%;
+    max-width: 500px !important;
+    padding: 24px !important;
+    margin: 10px auto;
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+}
+
+.profile-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+    flex-shrink: 0;
+}
+
+.person-icon {
+    font-size: 36px !important;
+    color: white;
+}
+
+.profile-info {
+    flex-grow: 1;
+    overflow: hidden;
+}
+
+.profile-info h2 {
+    margin: 0;
+    font-size: 18px;
+    color: #f8fafc;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-info p {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: #94a3b8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.input-group label {
+    margin-bottom: 4px;
+    font-size: 12px;
+}
+
+.input-group input,
+.input-group select {
+    margin-bottom: 0 !important; /* Override general margin for better grid control */
+    padding: 10px 12px !important;
+    font-size: 13px !important;
+    height: 42px; /* Standardize height */
+}
+
+/* Specific fix for toggle-password button positioning */
+.input-group .input-container button {
+    top: 0;
+    bottom: 0;
+}
+
+.stats-row {
+    display: flex;
+    gap: 10px;
+}
+
+.stats-row .input-group {
+    flex: 1;
+}
+
+.disabled-input {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: rgba(15, 23, 42, 0.7) !important;
+}
+
+#userProfileForm #content2 {
+    margin-top: 15px !important;
+}
+
+#userProfileForm .send-btn {
+    min-height: 44px;
+}
+
+/* Responsiveness for small screens */
+@media (max-width: 500px) {
+    .user-profile-page {
+        padding: 10px 10px 70px 10px;
+    }
+
+    .profile-card {
+        padding: 18px !important;
+        margin: 0 auto;
+    }
+
+    .profile-header {
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        gap: 12px;
+    }
+
+    .profile-avatar {
+        width: 50px;
+        height: 50px;
+    }
+
+    .person-icon {
+        font-size: 30px !important;
+    }
+
+    .profile-info h2 {
+        font-size: 16px;
+    }
+    
+    .profile-info p {
+        font-size: 12px;
+    }
+
+    .profile-form-grid {
+        gap: 8px;
+    }
+
+    .input-group label {
+        font-size: 11px;
+    }
+    
+    .input-group input,
+    .input-group select {
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+        height: 38px;
+    }
+
+    /* Force stats row elements side by side on mobile for space saving, unless screen is VERY narrow */
+    .stats-row {
+        gap: 8px;
+    }
+}
+
+@media (max-width: 320px) {
+    .stats-row {
+        flex-direction: column;
+    }
+}

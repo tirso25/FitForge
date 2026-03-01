@@ -26,7 +26,7 @@ const WeightsIcon = ({ size = 22 }) => (
 
 const navItems = [
     { id: 'home', icon: 'home', label: 'Home', path: '/' },
-    { id: 'profile', icon: 'person', label: 'Profile', path: '/profile' },
+    { id: 'profile', icon: 'person', label: 'Profile', path: '/user-profile' },
     { id: 'ai', icon: 'gemini', label: 'AI Trainer', path: '/ai' },
     { id: 'calendar', icon: 'edit_calendar', label: 'Calendar', path: '/calendar' },
     { id: 'add', icon: 'add', label: 'Add exercise', path: '/add-exercise' },
