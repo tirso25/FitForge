@@ -37,10 +37,18 @@ export default function UserProfile() {
 
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [userData, setUserData] = useState({ username: '', email: '' });
+    const [profileData, setProfileData] = useState(null);
 
     useEffect(() => {
         fetchUserProfile();
     }, []);
+
+    // Validate once the form mounts with profile data
+    useEffect(() => {
+        if (profileData && status === 'idle') {
+            validateInput();
+        }
+    }, [profileData, status]);
 
     useEffect(() => {
         if (!sendButtonRef.current) return;
@@ -67,20 +75,19 @@ export default function UserProfile() {
             if (!response.ok) throw new Error('Failed to load profile');
             const data = await response.json();
 
-            // Populate fields
-            if (usernameRef.current) usernameRef.current.value = data.username || '';
-            if (emailRef.current) emailRef.current.value = data.email || '';
-            if (weightRef.current) weightRef.current.value = data.weight || '';
-            if (heightRef.current) heightRef.current.value = data.height || '';
-            if (ageRef.current) ageRef.current.value = data.age || '';
-            if (genderRef.current) {
-                const mapGender = { 'M': 'male', 'F': 'female' };
-                genderRef.current.value = mapGender[data.gender] || data.gender || '';
-            }
+            const mapGender = { 'M': 'male', 'F': 'female' };
+            // Store data in state so inputs get values via defaultValue when they mount
+            setProfileData({
+                username: data.username || '',
+                email: data.email || '',
+                weight: data.weight || '',
+                height: data.height || '',
+                age: data.age || '',
+                gender: mapGender[data.gender] || data.gender || '',
+            });
 
             setUserData({ username: data.username, email: data.email });
             setStatus('idle');
-            validateInput();
         } catch (error) {
             console.error('Error fetching profile:', error);
             setStatus('error');
@@ -258,7 +265,7 @@ export default function UserProfile() {
                     </div>
                 </div>
 
-                <form id="userProfileForm" ref={formRef} onSubmit={handleSubmit}>
+                <form id="userProfileForm" key={profileData ? 'loaded' : 'empty'} ref={formRef} onSubmit={handleSubmit}>
                     <div id="content1" className="profile-form-grid">
 
                         <div className="input-group">
@@ -269,6 +276,7 @@ export default function UserProfile() {
                                 placeholder="Username"
                                 minLength="3"
                                 required
+                                defaultValue={profileData?.username || ''}
                                 ref={usernameRef}
                                 onFocus={handleFocus}
                                 onBlur={handleBlur}
@@ -283,6 +291,7 @@ export default function UserProfile() {
                                 type="email"
                                 id="email"
                                 disabled
+                                defaultValue={profileData?.email || ''}
                                 ref={emailRef}
                                 className="disabled-input"
                                 autoComplete="email"
@@ -323,6 +332,7 @@ export default function UserProfile() {
                                     min="20"
                                     max="200"
                                     required
+                                    defaultValue={profileData?.weight || ''}
                                     ref={weightRef}
                                     onFocus={handleFocus}
                                     onBlur={handleBlur}
@@ -338,6 +348,7 @@ export default function UserProfile() {
                                     min="50"
                                     max="250"
                                     required
+                                    defaultValue={profileData?.height || ''}
                                     ref={heightRef}
                                     onFocus={handleFocus}
                                     onBlur={handleBlur}
@@ -355,6 +366,7 @@ export default function UserProfile() {
                                     min="1"
                                     max="120"
                                     required
+                                    defaultValue={profileData?.age || ''}
                                     ref={ageRef}
                                     onFocus={handleFocus}
                                     onBlur={handleBlur}
@@ -367,6 +379,7 @@ export default function UserProfile() {
                                 <select
                                     id="gender"
                                     required
+                                    defaultValue={profileData?.gender || ''}
                                     ref={genderRef}
                                     onFocus={handleFocus}
                                     onBlur={handleBlur}
