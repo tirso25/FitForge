@@ -14,8 +14,7 @@ export default function AI() {
     const [inputValue, setInputValue] = useState('');
     const [messages, setMessages] = useState([]);
     const [isTyping, setIsTyping] = useState(false);
-    const [statusText, setStatusText] = useState('🟢 Conectado');
-    const [statusClass, setStatusClass] = useState('online');
+
     const [isDisabled, setIsDisabled] = useState(false);
 
     const goToProfile = () => {
@@ -104,10 +103,7 @@ export default function AI() {
         setIsTyping(false);
     };
 
-    const updateStatus = (message, type = 'online') => {
-        setStatusText(message);
-        setStatusClass(type);
-    };
+
 
     const extractMetrics = (text) => {
         const metrics = {};
@@ -194,7 +190,7 @@ export default function AI() {
         showTyping();
 
         try {
-            updateStatus('🤖 Thinking...', 'thinking');
+
 
             const token = localStorage.getItem('token') || '';
 
@@ -220,21 +216,17 @@ export default function AI() {
                 addMessage(getFallbackResponse(message));
             }
 
-            updateStatus('🟢 Conectado', 'online');
+
 
         } catch (error) {
             hideTyping();
             addMessage('❌ Server connection error. Could you try again?');
-            updateStatus('❌ Error', 'error');
+
         } finally {
             setIsDisabled(false);
             messageInputRef.current?.focus();
 
-            setTimeout(() => {
-                if (statusText.includes('Error')) {
-                    updateStatus('🟢 Connected', 'online');
-                }
-            }, 3000);
+
         }
     };
 
@@ -265,7 +257,6 @@ export default function AI() {
 
     const toggleMicrophone = () => {
         if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-            updateStatus('❌ Microphone not supported', 'error');
             return;
         }
 
@@ -287,7 +278,7 @@ export default function AI() {
 
             newRecognition.onstart = () => {
                 setIsRecording(true);
-                updateStatus('🎤 Recording...', 'thinking');
+
             };
 
             newRecognition.onresult = (event) => {
@@ -297,8 +288,7 @@ export default function AI() {
 
             newRecognition.onerror = () => {
                 stopRecording();
-                updateStatus('❌ Microphone error', 'error');
-                setTimeout(() => updateStatus('🟢 Connected', 'online'), 2000);
+
             };
 
             newRecognition.onend = () => {
@@ -308,8 +298,7 @@ export default function AI() {
             setRecognition(newRecognition);
             newRecognition.start();
         } catch {
-            updateStatus('❌ Microphone error', 'error');
-            setTimeout(() => updateStatus('🟢 Connected', 'online'), 2000);
+
         }
     };
 
@@ -320,7 +309,7 @@ export default function AI() {
         }
 
         setIsRecording(false);
-        updateStatus('🟢 Conectado', 'online');
+
     };
 
     const clearChat = () => {
@@ -335,9 +324,7 @@ export default function AI() {
 
     return (
         <div className="ai-trainer-container">
-            <div className={`status ${statusClass}`}>
-                {statusText}
-            </div>
+
 
             <div className="container">
                 <div className="header">

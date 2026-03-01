@@ -38,6 +38,8 @@ export default function UserProfile() {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [userData, setUserData] = useState({ username: '', email: '' });
     const [profileData, setProfileData] = useState(null);
+    const [isDeletingAi, setIsDeletingAi] = useState(false);
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     useEffect(() => {
         fetchUserProfile();
@@ -152,9 +154,9 @@ export default function UserProfile() {
             const genderMap = { male: 'M', female: 'F' };
             const payload = {
                 username: usernameRef.current.value.trim(),
-                weight: parseInt(weightRef.current.value),
-                height: parseInt(heightRef.current.value),
-                age: parseInt(ageRef.current.value),
+                weight: weightRef.current.value.trim(),
+                height: heightRef.current.value.trim(),
+                age: ageRef.current.value.trim(),
                 gender: genderMap[genderRef.current.value] ?? genderRef.current.value,
             };
 
@@ -244,6 +246,37 @@ export default function UserProfile() {
 
     const togglePasswordVisibility = () => {
         setPasswordVisible(!passwordVisible);
+    };
+
+    const handleDeleteAiHistory = async () => {
+        const notyf = new Notyf();
+        try {
+            setIsDeletingAi(true);
+            setShowDeleteConfirm(false);
+            const response = await apiFetch('/api/users/ai-info', { method: 'DELETE' });
+
+            if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                throw new Error(errData.error || 'Failed to delete AI history');
+            }
+
+            notyf.success({
+                message: 'AI history deleted successfully!',
+                duration: 3000,
+                dismissible: true,
+                position: { x: 'right', y: 'top' },
+            });
+        } catch (error) {
+            console.error('Error deleting AI history:', error);
+            notyf.error({
+                message: error.message || 'Could not delete AI history.',
+                duration: 4000,
+                dismissible: true,
+                position: { x: 'right', y: 'top' },
+            });
+        } finally {
+            setIsDeletingAi(false);
+        }
     };
 
     if (isFetching) {
@@ -416,6 +449,50 @@ export default function UserProfile() {
                         </button>
                     </div>
                 </form>
+
+                <div className="danger-zone">
+                    {!showDeleteConfirm ? (
+                        <button
+                            type="button"
+                            className="delete-ai-btn"
+                            onClick={() => setShowDeleteConfirm(true)}
+                            disabled={isDeletingAi}
+                        >
+                            {isDeletingAi ? (
+                                <LottieAnimation />
+                            ) : (
+                                <>
+                                    <span className="material-symbols-outlined">delete_forever</span>
+                                    Delete AI History
+                                </>
+                            )}
+                        </button>
+                    ) : (
+                        <div className="delete-confirm-panel">
+                            <p className="delete-confirm-text">
+                                <span className="material-symbols-outlined warning-icon">warning</span>
+                                ¿Estás seguro? Esta acción eliminará todo tu historial de IA y no se puede deshacer.
+                            </p>
+                            <div className="delete-confirm-actions">
+                                <button
+                                    type="button"
+                                    className="confirm-cancel-btn"
+                                    onClick={() => setShowDeleteConfirm(false)}
+                                >
+                                    Cancelar
+                                </button>
+                                <button
+                                    type="button"
+                                    className="confirm-delete-btn"
+                                    onClick={handleDeleteAiHistory}
+                                >
+                                    <span className="material-symbols-outlined">delete_forever</span>
+                                    Confirmar
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                </div>
             </fieldset>
         </div>
     );

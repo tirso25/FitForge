@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { apiFetch } from '../utils/api';
 import '../styles/navbar.css';
@@ -40,6 +40,24 @@ export default function NavBar({ onLogout }) {
     const navigate = useNavigate();
     const location = useLocation();
     const [loggingOut, setLoggingOut] = useState(false);
+    const [currentTime, setCurrentTime] = useState(new Date());
+
+    useEffect(() => {
+        const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+        return () => clearInterval(timer);
+    }, []);
+
+    const formatTime = (date) => {
+        return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+    };
+
+    const formatDate = (date) => {
+        const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+        const day = days[date.getDay()];
+        const dd = String(date.getDate()).padStart(2, '0');
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        return `${day} ${dd}/${mm}`;
+    };
 
     const handleLogout = async () => {
         if (loggingOut) return;
@@ -71,7 +89,12 @@ export default function NavBar({ onLogout }) {
     };
 
     return (
-        <nav className="liquid-navbar">
+        <>
+            <div className="digital-clock">
+                <span className="clock-time">{formatTime(currentTime)}</span>
+                <span className="clock-date">{formatDate(currentTime)}</span>
+            </div>
+            <nav className="liquid-navbar">
             <div className="liquid-navbar-inner">
                 {navItems.map((item) => (
                     <button
@@ -92,5 +115,6 @@ export default function NavBar({ onLogout }) {
                 ))}
             </div>
         </nav>
+        </>
     );
 }
