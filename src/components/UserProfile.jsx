@@ -273,6 +273,7 @@ export default function UserProfile() {
                                 onFocus={handleFocus}
                                 onBlur={handleBlur}
                                 onInput={validateInput}
+                                autoComplete="username"
                             />
                         </div>
 
@@ -284,6 +285,7 @@ export default function UserProfile() {
                                 disabled
                                 ref={emailRef}
                                 className="disabled-input"
+                                autoComplete="email"
                             />
                         </div>
 
