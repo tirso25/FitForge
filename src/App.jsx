@@ -38,7 +38,6 @@ function App() {
         checkAuth();
     }, []);
 
-    // Pantalla de carga mientras se verifica la sesión
     const loading = <div style={{ background: '#1e293b', height: '100vh' }} />;
 
     // Ruta protegida: requiere autenticación y perfil completo
