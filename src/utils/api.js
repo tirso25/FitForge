@@ -1,8 +1,5 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
 
-/**
- * Custom fetch wrapper that handles automatic token refresh on 401 errors.
- */
 export const apiFetch = async (url, options = {}) => {
     // Ensure credentials: 'include' is always set for cookie handling
     const defaultOptions = {
