@@ -41,6 +41,8 @@ export default function NavBar({ onLogout }) {
     const location = useLocation();
     const [loggingOut, setLoggingOut] = useState(false);
     const [currentTime, setCurrentTime] = useState(new Date());
+    const [touchedId, setTouchedId] = useState(null);
+    const touchTimerRef = useRef(null);
 
     useEffect(() => {
         const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -88,6 +90,13 @@ export default function NavBar({ onLogout }) {
         return location.pathname.startsWith(item.path);
     };
 
+    const handleTouch = (item) => {
+        if (touchTimerRef.current) clearTimeout(touchTimerRef.current);
+        setTouchedId(item.id);
+        touchTimerRef.current = setTimeout(() => setTouchedId(null), 2000);
+    };
+
+
     return (
         <>
             <div className="digital-clock">
@@ -99,8 +108,9 @@ export default function NavBar({ onLogout }) {
                 {navItems.map((item) => (
                     <button
                         key={item.id}
-                        className={`nav-item ${isActive(item) ? 'active' : ''} ${item.id === 'logout' ? 'nav-logout' : ''}`}
+                        className={`nav-item ${isActive(item) ? 'active' : ''} ${item.id === 'logout' ? 'nav-logout' : ''} ${touchedId === item.id ? 'touched' : ''}`}
                         onClick={() => handleClick(item)}
+                        onTouchStart={() => handleTouch(item)}
                         disabled={item.id === 'logout' && loggingOut}
                     >
                         {item.icon === 'gemini' ? (
