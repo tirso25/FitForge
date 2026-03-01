@@ -25,6 +25,7 @@ export default function UserProfile() {
     const ageRef = useRef(null);
     const genderRef = useRef(null);
     const sendButtonRef = useRef(null);
+    const pwdCounterRef = useRef(null);
 
     const [allRight, setAllRight] = useState(true); // Defaults to true since data is pre-populated
     const [alreadyCelebrated, setAlreadyCelebrated] = useState(false);
@@ -113,6 +114,69 @@ export default function UserProfile() {
             <DotLottieReact src="/animations/loading.lottie" loop autoplay style={{ width: '100%', height: '100%' }} />
         </div>
     );
+
+    const checkPasswordRequirements = (password) => {
+        return {
+            length: password.length >= 8,
+            uppercase: /[A-Z]/.test(password),
+            lowercase: /[a-z]/.test(password),
+            digit: /\d/.test(password),
+            special: /[@$!%*?&#^()_+=\-\[\]{};:,.<>]/.test(password),
+        };
+    };
+
+    const updatePasswordCounter = (password) => {
+        const counter = pwdCounterRef.current;
+        if (!counter) return;
+
+        const reqs = checkPasswordRequirements(password);
+        const spans = counter.querySelectorAll('.counter-item');
+        if (spans.length < 5) return;
+
+        const charCount = password.length;
+        const upperCount = (password.match(/[A-Z]/g) || []).length;
+        const lowerCount = (password.match(/[a-z]/g) || []).length;
+        const digitCount = (password.match(/\d/g) || []).length;
+        const specialCount = (password.match(/[@$!%*?&#^()_+=\-\[\]{};:,.<>]/g) || []).length;
+
+        spans[0].textContent = `Char: ${charCount}`;
+        spans[1].textContent = `Upper: ${upperCount}`;
+        spans[2].textContent = `Lower: ${lowerCount}`;
+        spans[3].textContent = `Digit: ${digitCount}`;
+        spans[4].textContent = `Special: ${specialCount}`;
+
+        spans[0].className = `counter-item ${reqs.length ? 'valid' : 'invalid'}`;
+        spans[1].className = `counter-item ${reqs.uppercase ? 'valid' : 'invalid'}`;
+        spans[2].className = `counter-item ${reqs.lowercase ? 'valid' : 'invalid'}`;
+        spans[3].className = `counter-item ${reqs.digit ? 'valid' : 'invalid'}`;
+        spans[4].className = `counter-item ${reqs.special ? 'valid' : 'invalid'}`;
+
+        if (password.length === 0) {
+            counter.style.opacity = '0';
+            counter.style.display = 'none';
+        } else {
+            counter.style.display = 'block';
+            counter.style.opacity = '1';
+        }
+    };
+
+    const handlePasswordFocus = () => {
+        const pwd = passwordRef.current?.value || '';
+        if (pwd.length > 0 && pwdCounterRef.current) {
+            pwdCounterRef.current.style.display = 'block';
+            pwdCounterRef.current.style.opacity = '1';
+        }
+    };
+
+    const handlePasswordBlur = () => {
+        if (pwdCounterRef.current) {
+            pwdCounterRef.current.style.opacity = '0';
+            setTimeout(() => {
+                if (pwdCounterRef.current) pwdCounterRef.current.style.display = 'none';
+            }, 300);
+        }
+    };
+
 
     const validateInput = () => {
         if (!weightRef.current || !heightRef.current || !ageRef.current || !genderRef.current || !usernameRef.current) return;
@@ -339,9 +403,10 @@ export default function UserProfile() {
                                     id="password"
                                     placeholder="Leave blank to keep current"
                                     ref={passwordRef}
-                                    onFocus={handleFocus}
-                                    onBlur={handleBlur}
+                                    onFocus={(e) => { handleFocus(e); handlePasswordFocus(); }}
+                                    onBlur={(e) => { handleBlur(e); handlePasswordBlur(); }}
                                     onInput={validateInput}
+                                    onKeyUp={(e) => updatePasswordCounter(e.target.value)}
                                     autoComplete="new-password"
                                 />
                                 <button
@@ -353,6 +418,13 @@ export default function UserProfile() {
                                         {passwordVisible ? "visibility" : "visibility_off"}
                                     </span>
                                 </button>
+                            </div>
+                            <div className="password-counter" ref={pwdCounterRef} style={{ display: 'none', opacity: 0, transition: 'opacity 0.3s ease' }}>
+                                <span className="counter-item">Char: 0</span>
+                                <span className="counter-item">Upper: 0</span>
+                                <span className="counter-item">Lower: 0</span>
+                                <span className="counter-item">Digit: 0</span>
+                                <span className="counter-item">Special: 0</span>
                             </div>
                         </div>
 
