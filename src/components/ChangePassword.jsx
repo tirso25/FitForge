@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import confetti from "canvas-confetti";
 import { Notyf } from "notyf";
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
@@ -15,6 +15,9 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000
 
 export default function ChangePassword() {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const cParam = searchParams.get('c');
+
     const formRef = useRef(null);
     const checkCodeRef = useRef(null);
     const passwordRef = useRef(null);
@@ -45,13 +48,28 @@ export default function ChangePassword() {
         initializeCounterStyles();
         initializeButtonStyles();
 
-        const params = new URLSearchParams(window.location.search);
-        const checkCode = params.get("checkCode");
-        if (checkCode && checkCodeRef.current) {
-            checkCodeRef.current.value = checkCode;
-            validateInput({ target: checkCodeRef.current });
-        }
-    }, []);
+        const initCode = async () => {
+            if (cParam && checkCodeRef.current) {
+                try {
+                    const res = await fetch(`${API_BASE_URL}/api/auth/decryptData`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ encrypted: cParam }),
+                    });
+                    const data = await res.json();
+
+                    if (res.ok && data.decrypted) {
+                        checkCodeRef.current.value = data.decrypted;
+                        validateInput({ target: checkCodeRef.current });
+                    }
+                } catch (error) {
+                    console.error("Error decrypting code:", error);
+                }
+            }
+        };
+
+        initCode();
+    }, [cParam]);
 
     useEffect(() => {
         if (!changePasswordButtonRef.current) return;
@@ -329,23 +347,26 @@ export default function ChangePassword() {
             const data = {
                 verificationCode: checkCodeRef.current.value,
                 password: passwordRef.current.value,
+            };
+
+            const validationData = {
+                verificationCode: checkCodeRef.current.value,
+                password: passwordRef.current.value,
                 repeatPassword: repeatPasswordRef.current.value,
             };
 
-            if (!validateData(data)) {
+            if (!validateData(validationData)) {
                 setStatus('idle');
                 return;
             }
 
             setStatus('loading');
 
-            const response = await fetch(`${API_BASE_URL}/api/users/changePassword`, {
-                method: "PUT",
+            const response = await fetch(`${API_BASE_URL}/api/auth/resetPassword`, {
+                method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem('token') || ''}`
+                    "Content-Type": "application/json"
                 },
-                credentials: "include",
                 body: JSON.stringify(data)
             });
 

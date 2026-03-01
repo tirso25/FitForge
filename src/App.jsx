@@ -5,6 +5,7 @@ import ChangePassword from "./components/ChangePassword.jsx";
 import Login from './components/Login.jsx';
 import SignIn from './components/SignIn.jsx';
 import CheckCode from './components/CheckCode.jsx';
+import CheckEmail from './components/CheckEmail.jsx';
 import AI from "./components/Ai.jsx";
 import Profile from './components/Profile.jsx';
 import NavBar from './components/NavBar.jsx';
@@ -71,6 +72,7 @@ function App() {
                     <Route path="/changePassword" element={<ChangePassword />} />
                     <Route path="/signIn" element={<SignIn />} />
                     <Route path="/checkCode" element={<CheckCode />} />
+                    <Route path="/checkEmail" element={<CheckEmail />} />
 
                     {/* Login: si ya está autenticado redirige directamente al destino correcto */}
                     <Route path="/login" element={
