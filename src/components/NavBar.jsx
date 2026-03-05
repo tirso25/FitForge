@@ -28,10 +28,10 @@ const navItems = [
     { id: 'home', icon: 'home', label: 'Home', path: '/' },
     { id: 'profile', icon: 'person', label: 'Profile', path: '/user-profile' },
     { id: 'ai', icon: 'gemini', label: 'AI Trainer', path: '/ai' },
-    { id: 'calendar', icon: 'edit_calendar', label: 'Calendar', path: '/calendar' },
     { id: 'add', icon: 'add', label: 'Add', path: '/add' },
+    { id: 'calendar', icon: 'edit_calendar', label: 'Calendar', path: '/calendar' },
     { id: 'map', icon: 'map', label: 'Map', path: '/map' },
-    { id: 'alarm', icon: 'alarm', label: 'Timer', path: '/alarms' },
+    { id: 'diet', icon: 'fork_spoon', label: 'Diet', path: '/diet' },
     { id: 'logout', icon: 'logout', label: 'Logout', path: null },
 ];
 
@@ -102,27 +102,27 @@ export default function NavBar({ onLogout }) {
                 <span className="clock-date">{formatDate(currentTime)}</span>
             </div>
             <nav className="liquid-navbar">
-            <div className="liquid-navbar-inner">
-                {navItems.map((item) => (
-                    <button
-                        key={item.id}
-                        className={`nav-item ${isActive(item) ? 'active' : ''} ${item.id === 'logout' ? 'nav-logout' : ''} ${touchedId === item.id ? 'touched' : ''}`}
-                        onClick={() => handleClick(item)}
-                        onTouchStart={() => handleTouch(item)}
-                        disabled={item.id === 'logout' && loggingOut}
-                    >
-                        {item.icon === 'gemini' ? (
-                            <GeminiIcon size={22} />
-                        ) : item.icon === 'weights' ? (
-                            <WeightsIcon size={22} />
-                        ) : (
-                            <span className="material-symbols-outlined">{item.icon}</span>
-                        )}
-                        <span className="nav-label">{item.label}</span>
-                    </button>
-                ))}
-            </div>
-        </nav>
+                <div className="liquid-navbar-inner">
+                    {navItems.map((item) => (
+                        <button
+                            key={item.id}
+                            className={`nav-item ${isActive(item) ? 'active' : ''} ${item.id === 'logout' ? 'nav-logout' : ''} ${touchedId === item.id ? 'touched' : ''}`}
+                            onClick={() => handleClick(item)}
+                            onTouchStart={() => handleTouch(item)}
+                            disabled={item.id === 'logout' && loggingOut}
+                        >
+                            {item.icon === 'gemini' ? (
+                                <GeminiIcon size={22} />
+                            ) : item.icon === 'weights' ? (
+                                <WeightsIcon size={22} />
+                            ) : (
+                                <span className="material-symbols-outlined">{item.icon}</span>
+                            )}
+                            <span className="nav-label">{item.label}</span>
+                        </button>
+                    ))}
+                </div>
+            </nav>
         </>
     );
 }
