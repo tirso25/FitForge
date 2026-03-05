@@ -1,10 +1,9 @@
-/* userProfile.css */
 .user-profile-page {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100dvh;
-    padding: 20px 20px 80px 20px; /* Extra bottom padding to clear navbar */
+    padding: 20px 20px 80px 20px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -85,13 +84,12 @@
 
 .input-group input,
 .input-group select {
-    margin-bottom: 0 !important; /* Override general margin for better grid control */
+    margin-bottom: 0 !important;
     padding: 10px 12px !important;
     font-size: 13px !important;
-    height: 42px; /* Standardize height */
+    height: 42px;
 }
 
-/* Specific fix for toggle-password button positioning */
 .input-group .input-container button {
     top: 0;
     bottom: 0;
@@ -102,10 +100,38 @@
     gap: 10px;
 }
 
-.stats-row .input-group {
+.stats-row .input-group,
+.stats-row .floating-input,
+.stats-row .custom-select-wrapper {
     flex: 1;
 }
 
+/* Override input-group !important rules for floating-input inside profile */
+.profile-form-grid .floating-input {
+    margin-bottom: 8px;
+}
+
+.profile-form-grid .floating-input input {
+    padding: 10px 10px 10px 42px !important;
+    font-size: 14px !important;
+    height: 44px;
+    margin-bottom: 0 !important;
+}
+
+.stats-row .floating-input {
+    min-width: 0;
+}
+
+.stats-row .floating-input input {
+    width: 100%;
+}
+
+/* Profile-specific select overrides */
+.profile-form-grid .custom-select-wrapper select {
+    font-size: 13px !important;
+    height: 42px;
+    margin-bottom: 0 !important;
+}
 .disabled-input {
     opacity: 0.6;
     cursor: not-allowed;
@@ -120,7 +146,6 @@
     min-height: 44px;
 }
 
-/* Responsiveness for small screens */
 @media (max-width: 500px) {
     .user-profile-page {
         padding: 10px 10px 70px 10px;
@@ -169,7 +194,6 @@
         height: 38px;
     }
 
-    /* Force stats row elements side by side on mobile for space saving, unless screen is VERY narrow */
     .stats-row {
         gap: 8px;
     }
@@ -180,7 +204,7 @@
         flex-direction: column;
     }
 }
-/* ── Password Strength Counter ─────────────────── */
+
 .password-counter {
     padding: 6px 10px;
     margin: 6px 0 12px 0;
@@ -219,7 +243,6 @@
     border-color: rgba(239, 68, 68, 0.2);
 }
 
-/* Danger Zone - Delete AI History */
 .danger-zone {
     margin-top: 20px;
     padding-top: 16px;
@@ -267,7 +290,6 @@
     font-size: 20px;
 }
 
-/* Delete Confirmation Panel */
 .delete-confirm-panel {
     border: 1px solid rgba(239, 68, 68, 0.3);
     border-radius: 10px;

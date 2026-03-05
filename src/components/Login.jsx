@@ -633,24 +633,25 @@ export default function Login(props) {
             <fieldset id="logIn">
                 <form id="logInForm" ref={formRef} onSubmit={handleSubmit}>
                     <div id="content1">
-                        <label htmlFor="login_email">Email or Username</label>
-                        <input
-                            type="text"
-                            id="login_email"
-                            placeholder="email@gmail.com/es or username"
-                            required
-                            minLength="5"
-                            maxLength="255"
-                            autoComplete="emailorusername"
-                            ref={emailRef}
-                            onFocus={handleFocus}
-                            onBlur={handleBlur}
-                            onInput={validateInput}
-                            onDoubleClick={handleDblClick}
-                        />
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">mail</span>
+                            <input
+                                type="text"
+                                id="login_email"
+                                placeholder="email@gmail.com/es or username"
+                                required
+                                minLength="5"
+                                maxLength="255"
+                                autoComplete="emailorusername"
+                                ref={emailRef}
+                                onInput={validateInput}
+                                onDoubleClick={handleDblClick}
+                            />
+                            <label htmlFor="login_email" className="floating-label">Email or Username</label>
+                        </div>
 
-                        <label htmlFor="login_password">Password</label>
-                        <div className="input-container">
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">lock</span>
                             <input
                                 type={passwordVisible ? "text" : "password"}
                                 id="login_password"
@@ -660,18 +661,13 @@ export default function Login(props) {
                                 maxLength="128"
                                 autoComplete="current-password"
                                 ref={passwordRef}
-                                onFocus={(e) => {
-                                    handleFocus(e);
-                                    handlePasswordFocus(countRef);
-                                }}
-                                onBlur={(e) => {
-                                    handleBlur(e);
-                                    handlePasswordBlur(countRef);
-                                }}
+                                onFocus={() => handlePasswordFocus(countRef)}
+                                onBlur={() => handlePasswordBlur(countRef)}
                                 onInput={validateInput}
                                 onKeyUp={(e) => handlePasswordKeyUp(e, countRef)}
                                 onDoubleClick={handleDblClick}
                             />
+                            <label htmlFor="login_password" className="floating-label">Password</label>
                             <button
                                 type="button"
                                 className="toggle-password"

@@ -509,23 +509,24 @@ export default function ChangePassword() {
             <fieldset id="signIn">
                 <form id="changePasswordForm" ref={formRef} onSubmit={handleSubmit}>
                     <div id="content1">
-                        <label htmlFor="check_code">Code</label>
-                        <input
-                            type="text"
-                            id="check_code"
-                            placeholder="123456"
-                            required
-                            minLength="6"
-                            maxLength="6"
-                            ref={checkCodeRef}
-                            onFocus={handleFocus}
-                            onBlur={handleBlur}
-                            onInput={validateInput}
-                            onDoubleClick={handleDblClick}
-                        />
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">pin</span>
+                            <input
+                                type="text"
+                                id="check_code"
+                                placeholder="123456"
+                                required
+                                minLength="6"
+                                maxLength="6"
+                                ref={checkCodeRef}
+                                onInput={validateInput}
+                                onDoubleClick={handleDblClick}
+                            />
+                            <label htmlFor="check_code" className="floating-label">Code</label>
+                        </div>
 
-                        <label htmlFor="signIn_password">Password</label>
-                        <div className="input-container">
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">lock</span>
                             <input
                                 type={passwordVisible ? "text" : "password"}
                                 id="signIn_password"
@@ -537,18 +538,13 @@ export default function ChangePassword() {
                                 autoComplete="new-password"
                                 title="At least 8 characters, including uppercase, lowercase, number, and special character"
                                 ref={passwordRef}
-                                onFocus={(e) => {
-                                    handleFocus(e);
-                                    handlePasswordFocus(countRef);
-                                }}
-                                onBlur={(e) => {
-                                    handleBlur(e);
-                                    handlePasswordBlur(countRef);
-                                }}
+                                onFocus={() => handlePasswordFocus(countRef)}
+                                onBlur={() => handlePasswordBlur(countRef)}
                                 onInput={validateInput}
                                 onKeyUp={(e) => handlePasswordKeyUp(e, countRef)}
                                 onDoubleClick={handleDblClick}
                             />
+                            <label htmlFor="signIn_password" className="floating-label">Password</label>
                             <button
                                 type="button"
                                 className="toggle-password"
@@ -567,8 +563,8 @@ export default function ChangePassword() {
                             <span className="counter-item">Special: 0</span>
                         </div>
 
-                        <label htmlFor="signIn_repeat_password">Repeat password</label>
-                        <div className="input-container">
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">lock</span>
                             <input
                                 type={repeatPasswordVisible ? "text" : "password"}
                                 id="signIn_repeat_password"
@@ -580,18 +576,13 @@ export default function ChangePassword() {
                                 autoComplete="new-password"
                                 title="At least 8 characters, including uppercase, lowercase, number, and special character"
                                 ref={repeatPasswordRef}
-                                onFocus={(e) => {
-                                    handleFocus(e);
-                                    handlePasswordFocus(count2Ref);
-                                }}
-                                onBlur={(e) => {
-                                    handleBlur(e);
-                                    handlePasswordBlur(count2Ref);
-                                }}
+                                onFocus={() => handlePasswordFocus(count2Ref)}
+                                onBlur={() => handlePasswordBlur(count2Ref)}
                                 onInput={validateInput}
                                 onKeyUp={(e) => handlePasswordKeyUp(e, count2Ref)}
                                 onDoubleClick={handleDblClick}
                             />
+                            <label htmlFor="signIn_repeat_password" className="floating-label">Repeat password</label>
                             <button
                                 type="button"
                                 className="toggle-password"

@@ -37,7 +37,6 @@ export default function CheckCode() {
 
     useTTS(speakBtnRef, rulesContainerRef);
 
-    // On mount: check user status + auto-fill code from email link
     useEffect(() => {
         if (!eParam) {
             navigate('/login', { replace: true });
@@ -47,7 +46,6 @@ export default function CheckCode() {
         const init = async () => {
             let plainEmail = '';
 
-            // Decrypt email from encrypted URL param
             try {
                 const res = await fetch(`${API_BASE_URL}/api/auth/decryptData`, {
                     method: 'POST',
@@ -68,7 +66,6 @@ export default function CheckCode() {
                 return;
             }
 
-            // Check user status
             try {
                 const res = await fetch(`${API_BASE_URL}/api/auth/checkStatus`, {
                     method: 'POST',
@@ -86,7 +83,6 @@ export default function CheckCode() {
                 return;
             }
 
-            // Auto-fill code from encrypted URL param
             if (cParam && checkCodeRef.current) {
                 try {
                     const res = await fetch(`${API_BASE_URL}/api/auth/decryptData`, {
@@ -98,13 +94,11 @@ export default function CheckCode() {
 
                     if (res.ok && data.decrypted) {
                         checkCodeRef.current.value = data.decrypted;
-                        // Trigger validation
                         const event = new Event('input', { bubbles: true });
                         checkCodeRef.current.dispatchEvent(event);
                         validateInput({ target: checkCodeRef.current });
                     }
                 } catch {
-                    // Ignore — user can still type manually
                 }
             }
         };
@@ -374,20 +368,21 @@ export default function CheckCode() {
             <fieldset id="checkCode">
                 <form id="checkCodeForm" ref={formRef} onSubmit={handleSubmit}>
                     <div id="content1">
-                        <label htmlFor="check_code">Verification Code</label>
-                        <input
-                            type="text"
-                            id="check_code"
-                            placeholder="123456"
-                            required
-                            minLength="6"
-                            maxLength="6"
-                            ref={checkCodeRef}
-                            onFocus={handleFocus}
-                            onBlur={handleBlur}
-                            onInput={validateInput}
-                            onDoubleClick={handleDblClick}
-                        />
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">pin</span>
+                            <input
+                                type="text"
+                                id="check_code"
+                                placeholder="123456"
+                                required
+                                minLength="6"
+                                maxLength="6"
+                                ref={checkCodeRef}
+                                onInput={validateInput}
+                                onDoubleClick={handleDblClick}
+                            />
+                            <label htmlFor="check_code" className="floating-label">Verification Code</label>
+                        </div>
                     </div>
                     <div id="content2">
                         <button

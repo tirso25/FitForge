@@ -1,7 +1,3 @@
-/* ══════════════════════════════════════════════════
-   CHECK CODE / PROFILE — LIQUID GLASS REDESIGN
-══════════════════════════════════════════════════ */
-
 * {
     box-sizing: border-box;
 }
@@ -11,7 +7,6 @@ body {
     position: relative;
 }
 
-/* ── Ambient light blobs ──────────────────────── */
 main::before,
 main::after {
     content: '';
@@ -46,7 +41,6 @@ main::after {
     100% { transform: translate(25px, -15px) scale(1.08); }
 }
 
-/* ── Tarjeta principal (Liquid Glass) ────────── */
 #checkCode {
     width: 90%;
     max-width: 400px;
@@ -82,7 +76,6 @@ fieldset {
     animation: cardEntry 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* ── Formulario ────────────────────────────────── */
 form label {
     display: block;
     margin-bottom: 6px;
@@ -122,13 +115,11 @@ form input[type="number"]::placeholder {
     color: #475569;
 }
 
-/* ── Select styling ────────────────────────────── */
 form select option {
     background: #1e293b;
     color: #e2e8f0;
 }
 
-/* ── Number input spinners removed ─────────────── */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -140,7 +131,6 @@ input[type="number"] {
     appearance: textfield;
 }
 
-/* ── Botones de envío ──────────────────────────── */
 form button[type="submit"],
 form .button,
 a.button {
@@ -181,7 +171,6 @@ a.button:active {
     transform: translateY(0) scale(0.97);
 }
 
-/* ── Submit / Send button ──────────────────────── */
 .checkcode-btn,
 .send-btn,
 form button[type="submit"] {
@@ -196,7 +185,6 @@ form button[type="submit"] {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Disabled/error state */
 .checkcode-btn:not(.enabled),
 .send-btn:not(.enabled),
 form button[type="submit"]:not(.enabled) {
@@ -204,7 +192,6 @@ form button[type="submit"]:not(.enabled) {
     box-shadow: 0 4px 14px rgba(239, 68, 68, 0.2) !important;
 }
 
-/* Enabled state */
 .checkcode-btn.enabled,
 .send-btn.enabled,
 form button[type="submit"].enabled {
@@ -219,7 +206,6 @@ form button[type="submit"].loading {
     min-height: 46px;
 }
 
-/* ── Fila de botones ───────────────────────────── */
 #content2 {
     display: flex;
     justify-content: space-between;
@@ -227,7 +213,6 @@ form button[type="submit"].loading {
     flex-wrap: wrap;
 }
 
-/* ── Input con icono ───────────────────────────── */
 .input-container {
     position: relative;
     width: 100%;
@@ -269,7 +254,6 @@ form button[type="submit"].loading {
     padding-right: 36px;
 }
 
-/* ── Reglas de validación ──────────────────────── */
 #rules {
     font-size: 80%;
     max-width: 100%;
@@ -299,7 +283,6 @@ form button[type="submit"].loading {
     border: 1px solid rgba(148, 163, 184, 0.08);
 }
 
-/* ── Botón TTS ─────────────────────────────────── */
 .tts-btn {
     background: none;
     border: none;
@@ -349,7 +332,6 @@ form button[type="submit"].loading {
     animation: subtle-highlight 3s infinite;
 }
 
-/* ── Animaciones ───────────────────────────────── */
 @keyframes custom-pulse {
     0%   { transform: scale(1); opacity: 1; }
     50%  { transform: scale(1.05); opacity: 0.8; }
@@ -396,9 +378,6 @@ form button[type="submit"].loading {
 
 .bounce-animation { animation: gentle-bounce 1.5s ease-in-out infinite; }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE — 500 px
-══════════════════════════════════════════════════ */
 @media (max-width: 500px) {
     main::before, main::after {
         opacity: 0.06;
@@ -462,9 +441,6 @@ form button[type="submit"].loading {
     .tts-btn .material-symbols-outlined { font-size: 16px; }
 }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE — 375 px
-══════════════════════════════════════════════════ */
 @media (max-width: 375px) {
     #checkCode {
         padding: 18px 14px;
@@ -489,9 +465,6 @@ form button[type="submit"].loading {
     }
 }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE — 320 px
-══════════════════════════════════════════════════ */
 @media (max-width: 320px) {
     #checkCode { padding: 14px 10px; }
     form label { font-size: 12px; }

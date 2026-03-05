@@ -1,7 +1,3 @@
-/* ══════════════════════════════════════════════════
-   SIGN IN — LIQUID GLASS REDESIGN
-══════════════════════════════════════════════════ */
-
 * {
     box-sizing: border-box;
 }
@@ -11,7 +7,6 @@ body {
     position: relative;
 }
 
-/* ── Ambient light blobs ──────────────────────── */
 main::before,
 main::after {
     content: '';
@@ -46,7 +41,6 @@ main::after {
     100% { transform: translate(25px, -15px) scale(1.08); }
 }
 
-/* ── Tarjeta principal (Liquid Glass) ────────── */
 #signIn {
     width: 100%;
     max-width: 400px;
@@ -82,7 +76,6 @@ fieldset {
     animation: cardEntry 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* ── Formulario ────────────────────────────────── */
 form label {
     display: block;
     margin-bottom: 6px;
@@ -119,7 +112,6 @@ form input[type="text"]::placeholder {
     color: #475569;
 }
 
-/* ── Botones de envío ──────────────────────────── */
 form button[type="submit"],
 form .button,
 a.button {
@@ -165,7 +157,6 @@ form button[type="submit"] {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── Fila de botones ───────────────────────────── */
 #content2 {
     display: flex;
     justify-content: space-between;
@@ -173,7 +164,6 @@ form button[type="submit"] {
     flex-wrap: wrap;
 }
 
-/* ── Input con icono ───────────────────────────── */
 .input-container {
     position: relative;
     width: 100%;
@@ -215,7 +205,6 @@ form button[type="submit"] {
     padding-right: 40px;
 }
 
-/* ── Reglas de validación ──────────────────────── */
 #rules {
     font-size: 80%;
     max-width: 100%;
@@ -245,7 +234,6 @@ form button[type="submit"] {
     border: 1px solid rgba(148, 163, 184, 0.08);
 }
 
-/* ── Contador de contraseña ────────────────────── */
 .password-counter {
     padding: 8px 12px;
     margin: 8px 0 15px 0;
@@ -285,7 +273,6 @@ form button[type="submit"] {
     border-color: rgba(239, 68, 68, 0.2);
 }
 
-/* ── Botón Google (Liquid Glass) ──────────────── */
 .google-login {
     margin-top: 16px;
     text-align: center;
@@ -327,7 +314,6 @@ form button[type="submit"] {
     height: 20px;
 }
 
-/* ── Botón TTS ─────────────────────────────────── */
 .tts-btn {
     background: none;
     border: none;
@@ -376,7 +362,6 @@ form button[type="submit"] {
     animation: subtle-highlight 3s infinite;
 }
 
-/* ── Animaciones ───────────────────────────────── */
 @keyframes custom-pulse {
     0%   { transform: scale(1); opacity: 1; }
     50%  { transform: scale(1.05); opacity: 0.8; }
@@ -423,9 +408,6 @@ form button[type="submit"] {
 
 .bounce-animation { animation: gentle-bounce 1.5s ease-in-out infinite; }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE — 480 px
-══════════════════════════════════════════════════ */
 @media (max-width: 480px) {
     main::before,
         main::after {
@@ -476,9 +458,6 @@ form button[type="submit"] {
     }
 }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE — 375 px
-══════════════════════════════════════════════════ */
 @media (max-width: 375px) {
     #signIn {
         padding: 18px 14px;
@@ -510,9 +489,6 @@ form button[type="submit"] {
     }
 }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE — 320 px
-══════════════════════════════════════════════════ */
 @media (max-width: 320px) {
     #signIn { padding: 14px 10px; }
     form label { font-size: 12px; }

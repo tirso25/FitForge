@@ -1,0 +1,260 @@
+/* Base layout */
+.add-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100dvh;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+}
+
+.add-card {
+    width: 100%;
+    max-width: 450px;
+    padding: 30px;
+    position: relative;
+    z-index: 10;
+}
+
+/* Header */
+.add-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.add-header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.5px;
+}
+
+.add-header p {
+    margin: 6px 0 0 0;
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+/* Tab Switcher */
+.tab-switcher {
+    display: flex;
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: 12px;
+    padding: 4px;
+    margin-bottom: 25px;
+    position: relative;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 10px 0;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.tab-btn .material-symbols-outlined {
+    font-size: 18px;
+}
+
+.tab-btn.active {
+    color: #ffffff;
+}
+
+.tab-indicator {
+    position: absolute;
+    top: 4px;
+    bottom: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(99, 102, 241, 0.2));
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    border-radius: 8px;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    z-index: 1;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+}
+
+/* Swipe Container */
+.swipe-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    padding-top: 10px;
+}
+
+.swipe-wrapper {
+    display: flex;
+    width: 200%; /* Holds two panels 100% wide each */
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    align-items: flex-start;
+}
+
+.swipe-panel {
+    width: 50%;
+    flex-shrink: 0;
+    padding: 0 4px;
+    box-sizing: border-box;
+}
+
+/* Form Styles Extension */
+.add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Labels are now handled by the floating-input system in general.css */
+
+.add-textarea {
+    width: 100%;
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 12px;
+    padding: 12px 16px 12px 42px;
+    color: #f8fafc;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+.add-textarea:focus {
+    outline: none;
+    border-color: rgba(59, 130, 246, 0.5);
+    background: rgba(30, 41, 59, 0.6);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Select specific styling */
+.select-container select {
+    width: 100%;
+    background: rgba(30, 41, 59, 0.4);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 12px;
+    padding: 0 16px;
+    color: #f8fafc;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    appearance: none;
+    height: 46px; /* Match input height precisely */
+    cursor: pointer;
+}
+
+.select-container select:focus {
+    outline: none;
+    border-color: rgba(59, 130, 246, 0.5);
+    background: rgba(30, 41, 59, 0.6);
+}
+
+.select-container select option {
+    background: #1e293b;
+    color: #f8fafc;
+    padding: 8px;
+}
+
+.select-container::after {
+    content: 'expand_more';
+    font-family: 'Material Symbols Outlined';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    pointer-events: none;
+    font-size: 20px;
+}
+
+/* Submit Buttons */
+.add-submit-btn {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    background: #ff3c00; /* Flat default disabled state matching Login */
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: not-allowed;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.add-submit-btn.enabled {
+    background: #2563eb;
+    cursor: pointer;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.add-submit-btn.enabled:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
+}
+
+.add-submit-btn.enabled:active {
+    transform: translateY(1px);
+}
+
+.add-submit-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.warning-text {
+    color: #f59e0b !important;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 0;
+}
+
+.warning-text .material-symbols-outlined {
+    font-size: 14px;
+}
+
+/* Responsiveness */
+@media (max-width: 480px) {
+    .add-page {
+        padding: 10px 10px 80px 10px; /* Leave bottom padding for mobile navbar */
+    }
+
+    .add-card {
+        padding: 24px;
+        border-radius: 20px;
+    }
+    
+    .add-header h2 {
+        font-size: 20px;
+    }
+
+    .tab-btn {
+        font-size: 13px;
+        padding: 8px 0;
+    }
+}

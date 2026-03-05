@@ -110,7 +110,6 @@ export default function Profile({ onProfileUpdate }) {
     const validateInput = (event) => {
         const target = event.target;
 
-        // Clampear al máximo en tiempo real para que no se pueda sobrepasar
         if (target.type === 'number' && target.value !== '') {
             const max = parseInt(target.max);
             const val = parseInt(target.value);
@@ -240,7 +239,6 @@ export default function Profile({ onProfileUpdate }) {
         e.target.style.border = "1px solid #3b4550";
         e.target.style.boxShadow = "none";
 
-        // Clampear al mínimo al salir del campo
         if (e.target.type === 'number' && e.target.value !== '') {
             const min = parseInt(e.target.min);
             const val = parseInt(e.target.value);
@@ -283,50 +281,56 @@ export default function Profile({ onProfileUpdate }) {
             <fieldset id="checkCode">
                 <form id="checkCodeForm" ref={formRef} onSubmit={handleSubmit}>
                     <div id="content1">
-                        <label htmlFor="weight">Weight (kg)</label>
-                        <input
-                            type="number"
-                            id="weight"
-                            placeholder="70"
-                            min="20"
-                            max="200"
-                            step="1"
-                            required
-                            ref={weightRef}
-                            onFocus={handleFocus}
-                            onBlur={handleBlur}
-                            onInput={validateInput}
-                            onDoubleClick={handleDblClick}
-                        />
-                        <label htmlFor="height">Height (cm)</label>
-                        <input
-                            type="number"
-                            id="height"
-                            placeholder="170"
-                            min="50"
-                            max="250"
-                            step="1"
-                            required
-                            ref={heightRef}
-                            onFocus={handleFocus}
-                            onBlur={handleBlur}
-                            onInput={validateInput}
-                            onDoubleClick={handleDblClick}
-                        />
-                        <label htmlFor="age">Age</label>
-                        <input
-                            type="number"
-                            id="age"
-                            placeholder="25"
-                            min="1"
-                            max="120"
-                            required
-                            ref={ageRef}
-                            onFocus={handleFocus}
-                            onBlur={handleBlur}
-                            onInput={validateInput}
-                            onDoubleClick={handleDblClick}
-                        />
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">weight</span>
+                            <input
+                                type="number"
+                                id="weight"
+                                placeholder=" "
+                                min="20"
+                                max="200"
+                                step="1"
+                                required
+                                ref={weightRef}
+                                onBlur={handleBlur}
+                                onInput={validateInput}
+                                onDoubleClick={handleDblClick}
+                            />
+                            <label htmlFor="weight" className="floating-label">Weight (kg)</label>
+                        </div>
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">height</span>
+                            <input
+                                type="number"
+                                id="height"
+                                placeholder=" "
+                                min="50"
+                                max="250"
+                                step="1"
+                                required
+                                ref={heightRef}
+                                onBlur={handleBlur}
+                                onInput={validateInput}
+                                onDoubleClick={handleDblClick}
+                            />
+                            <label htmlFor="height" className="floating-label">Height (cm)</label>
+                        </div>
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">calendar_month</span>
+                            <input
+                                type="number"
+                                id="age"
+                                placeholder=" "
+                                min="1"
+                                max="120"
+                                required
+                                ref={ageRef}
+                                onBlur={handleBlur}
+                                onInput={validateInput}
+                                onDoubleClick={handleDblClick}
+                            />
+                            <label htmlFor="age" className="floating-label">Age</label>
+                        </div>
                         <label htmlFor="gender">Gender</label>
                         <select
                             id="gender"

@@ -18,7 +18,6 @@ body {
     overflow-x: hidden;
 }
 
-/* ── Custom Scrollbar (global) ─────────────────── */
 ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -42,7 +41,6 @@ body {
     background: transparent;
 }
 
-/* Firefox scrollbar */
 * {
     scrollbar-width: thin;
     scrollbar-color: rgba(148, 163, 184, 0.2) transparent;
@@ -72,7 +70,6 @@ main {
     flex: 1;
 }
 
-/* ── Tarjeta principal ─────────────────────────── */
 #checkCode {
     width: 100%;
     max-width: 400px;
@@ -91,7 +88,6 @@ fieldset {
     margin: 0 auto;
 }
 
-/* ── Formulario ────────────────────────────────── */
 form label {
     display: block;
     margin-bottom: 5px;
@@ -115,7 +111,6 @@ form input[type="text"]::placeholder {
     color: #94a3b8;
 }
 
-/* ── Botones de envío ──────────────────────────── */
 form button[type="submit"],
 form .button,
 a.button {
@@ -153,7 +148,6 @@ a.button:hover {
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* ── Fila de botones ───────────────────────────── */
 #content2 {
     display: flex;
     justify-content: space-between;
@@ -161,7 +155,6 @@ a.button:hover {
     flex-wrap: wrap;
 }
 
-/* ── Input con icono ───────────────────────────── */
 .input-container {
     position: relative;
     width: 100%;
@@ -192,7 +185,6 @@ a.button:hover {
     padding-right: 40px;
 }
 
-/* ── Reglas de validación ──────────────────────── */
 #rules {
     font-size: 80%;
     max-width: 100%;
@@ -214,7 +206,6 @@ a.button:hover {
     align-items: start;
 }
 
-/* ── Botón TTS ─────────────────────────────────── */
 .tts-btn {
     background: none;
     border: none;
@@ -263,7 +254,6 @@ a.button:hover {
     animation: subtle-highlight 3s infinite;
 }
 
-/* ── Opciones ──────────────────────────────────── */
 .options-container {
     display: flex;
     justify-content: space-between;
@@ -291,7 +281,6 @@ a.button:hover {
     white-space: nowrap;
 }
 
-/* ── Animaciones ───────────────────────────────── */
 @keyframes custom-pulse {
     0%   { transform: scale(1); opacity: 1; }
     50%  { transform: scale(1.05); opacity: 0.8; }
@@ -341,15 +330,223 @@ a.button:hover {
 
 
 
+/* ===== Floating Input System ===== */
+.floating-input {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.floating-input .input-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 20px;
+    pointer-events: none;
+    transition: color 0.3s ease;
+    z-index: 2;
+}
+
+.floating-input input,
+.floating-input textarea,
+.floating-input select {
+    width: 100%;
+    padding: 10px 10px 10px 42px;
+    border: 1px solid #3b4550;
+    border-radius: 5px;
+    background-color: #1f2937;
+    color: #f1f2e1;
+    font-size: 14px;
+    margin-bottom: 0;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.floating-input .floating-label {
+    position: absolute;
+    left: 42px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 14px;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
+    background: transparent;
+    padding: 0;
+}
+
+/* Placeholder: hidden by default, visible on focus */
+.floating-input input::placeholder,
+.floating-input textarea::placeholder {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.floating-input input:focus::placeholder,
+.floating-input textarea:focus::placeholder {
+    opacity: 0.5;
+}
+
+/* Float up on focus or when input has content */
+.floating-input input:focus~.floating-label,
+.floating-input input:not(:placeholder-shown)~.floating-label,
+.floating-input textarea:focus~.floating-label,
+.floating-input textarea:not(:placeholder-shown)~.floating-label {
+    top: 0;
+    left: 12px;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #94a3b8;
+    background: #1f2937;
+    padding: 0 6px;
+}
+
+/* Icon color changes on focus */
+.floating-input input:focus~.input-icon,
+.floating-input textarea:focus~.input-icon {
+    color: #94a3b8;
+}
+
+/* Border color on focus (replaces inline JS handleFocus/handleBlur for floating inputs) */
+.floating-input input:focus,
+.floating-input textarea:focus,
+.floating-input select:focus {
+    border-color: #5057d4;
+    outline: none;
+    box-shadow: 0 0 5px #5057d4;
+}
+
+/* Password toggle button positioning inside floating-input */
+.floating-input .toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: auto;
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    color: #f1f2e1;
+    font-size: 18px;
+    cursor: pointer;
+    bottom: auto;
+    margin: 0;
+}
+
+.floating-input .toggle-password .material-symbols-outlined {
+    font-size: 20px;
+}
+
+.floating-input .toggle-password:hover {
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Textarea-specific floating label positioning */
+.floating-input.floating-textarea .floating-label {
+    top: 20px;
+}
+
+.floating-input.floating-textarea textarea:focus~.floating-label,
+.floating-input.floating-textarea textarea:not(:placeholder-shown)~.floating-label {
+    top: 0;
+    left: 12px;
+    transform: translateY(-50%);
+}
+
+/* ===== Custom Select Wrapper ===== */
+.custom-select-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+    background-color: #1f2937;
+    border-radius: 5px;
+}
+
+.custom-select-wrapper .select-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 20px;
+    pointer-events: none;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    line-height: 1;
+}
+
+.custom-select-wrapper select {
+    width: 100%;
+    padding: 10px 36px 10px 42px !important;
+    font-size: 14px;
+    height: 42px;
+    background-color: transparent !important;
+    background: transparent !important;
+    color: #f1f2e1;
+    border: 1px solid #3b4550;
+    border-radius: 5px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 0 !important;
+}
+
+.custom-select-wrapper select:focus {
+    border-color: #5057d4;
+    outline: none;
+    box-shadow: 0 0 5px #5057d4;
+}
+
+.custom-select-wrapper select option {
+    background-color: #1e293b;
+    color: #f1f2e1;
+    padding: 10px 12px;
+}
+
+.custom-select-wrapper select option:checked {
+    background-color: #334155;
+    color: #60a5fa;
+}
+
+.custom-select-wrapper select option:disabled {
+    color: #64748b;
+}
+
+.custom-select-wrapper::after {
+    content: '\e5cf';
+    font-family: 'Material Symbols Outlined';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 20px;
+    pointer-events: none;
+}
+
+.custom-select-wrapper .select-label {
+    position: absolute;
+    left: 12px;
+    top: 0;
+    transform: translateY(-50%);
+    font-size: 12px;
+    color: #94a3b8;
+    background: #1f2937;
+    padding: 0 6px;
+    pointer-events: none;
+    z-index: 2;
+}
 :root {
     --cursor-size: 18px;
     --cursor-border: 2px;
     --cursor-color: rgba(121, 49, 255, 0.8);
 }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE — 480 px
-══════════════════════════════════════════════════ */
 @media (max-width: 480px) {
     #root {
         padding-top: max(16px, env(safe-area-inset-top));
@@ -396,9 +593,6 @@ a.button:hover {
     .tts-btn .material-symbols-outlined { font-size: 16px; }
 }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE — 375 px
-══════════════════════════════════════════════════ */
 @media (max-width: 375px) {
     #root {
         padding-left: max(12px, env(safe-area-inset-left));
@@ -427,9 +621,6 @@ a.button:hover {
     }
 }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE — 320 px
-══════════════════════════════════════════════════ */
 @media (max-width: 320px) {
     #checkCode { padding: 14px 10px; }
     form label { font-size: 12px; }

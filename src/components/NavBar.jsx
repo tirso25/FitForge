@@ -29,8 +29,7 @@ const navItems = [
     { id: 'profile', icon: 'person', label: 'Profile', path: '/user-profile' },
     { id: 'ai', icon: 'gemini', label: 'AI Trainer', path: '/ai' },
     { id: 'calendar', icon: 'edit_calendar', label: 'Calendar', path: '/calendar' },
-    { id: 'add', icon: 'add', label: 'Add exercise', path: '/add-exercise' },
-    { id: 'routines', icon: 'weights', label: 'Routines', path: '/routines' },
+    { id: 'add', icon: 'add', label: 'Add', path: '/add' },
     { id: 'map', icon: 'map', label: 'Map', path: '/map' },
     { id: 'alarm', icon: 'alarm', label: 'Timer', path: '/alarms' },
     { id: 'logout', icon: 'logout', label: 'Logout', path: null },
@@ -67,7 +66,6 @@ export default function NavBar({ onLogout }) {
         try {
             await apiFetch('/api/auth/signout', { method: 'POST' });
         } catch {
-            // Aunque falle, limpiamos sesión
         } finally {
             localStorage.removeItem('jwt_token');
             localStorage.removeItem('userData');

@@ -10,6 +10,7 @@ import AI from "./components/Ai.jsx";
 import Profile from './components/Profile.jsx';
 import UserProfile from './components/UserProfile.jsx';
 import NavBar from './components/NavBar.jsx';
+import Add from './components/Add.jsx';
 import { apiFetch } from './utils/api';
 import '../index.css';
 
@@ -67,14 +68,11 @@ function App() {
             {isAuthenticated && isProfileComplete && <NavBar onLogout={() => { setIsAuthenticated(false); setIsProfileComplete(false); }} />}
             <main>
                 <Routes>
-                    {/* Rutas públicas del flujo de registro/verificación */}
-
                     <Route path="/changePassword" element={<ChangePassword />} />
                     <Route path="/signIn" element={<SignIn />} />
                     <Route path="/checkCode" element={<CheckCode />} />
                     <Route path="/checkEmail" element={<CheckEmail />} />
 
-                    {/* Login: si ya está autenticado redirige directamente al destino correcto */}
                     <Route path="/login" element={
                         isAuthenticated === null
                             ? loading
@@ -83,7 +81,6 @@ function App() {
                                 : <Login onLoginSuccess={checkAuth} />
                     } />
 
-                    {/* Rutas protegidas: requieren auth + perfil completo */}
                     <Route path="/ai" element={
                         <ProtectedRoute><AI /></ProtectedRoute>
                     } />
@@ -91,10 +88,12 @@ function App() {
                         <ProtectedRoute><UserProfile /></ProtectedRoute>
                     } />
 
-                    {/* Ruta de perfil: solo accesible si no tienes perfil relleno */}
+                    <Route path="/add" element={
+                        <ProtectedRoute><Add /></ProtectedRoute>
+                    } />
+
                     <Route path="/profile" element={<ProfileRoute />} />
 
-                    {/* Ruta raíz y wildcard */}
                     <Route path="/" element={
                         isAuthenticated === null
                             ? loading

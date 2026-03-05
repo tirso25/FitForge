@@ -27,7 +27,7 @@ export default function UserProfile() {
     const sendButtonRef = useRef(null);
     const pwdCounterRef = useRef(null);
 
-    const [allRight, setAllRight] = useState(true); // Defaults to true since data is pre-populated
+    const [allRight, setAllRight] = useState(true);
     const [alreadyCelebrated, setAlreadyCelebrated] = useState(false);
     const [status, setStatus] = useState('loading');
     const isLoading = status === 'loading';
@@ -46,7 +46,6 @@ export default function UserProfile() {
         fetchUserProfile();
     }, []);
 
-    // Validate once the form mounts with profile data
     useEffect(() => {
         if (profileData && status === 'idle') {
             validateInput();
@@ -79,7 +78,7 @@ export default function UserProfile() {
             const data = await response.json();
 
             const mapGender = { 'M': 'male', 'F': 'female' };
-            // Store data in state so inputs get values via defaultValue when they mount
+
             setProfileData({
                 username: data.username || '',
                 email: data.email || '',
@@ -365,8 +364,8 @@ export default function UserProfile() {
                 <form id="userProfileForm" key={profileData ? 'loaded' : 'empty'} ref={formRef} onSubmit={handleSubmit}>
                     <div id="content1" className="profile-form-grid">
 
-                        <div className="input-group">
-                            <label htmlFor="username">Username</label>
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">person</span>
                             <input
                                 type="text"
                                 id="username"
@@ -375,15 +374,15 @@ export default function UserProfile() {
                                 required
                                 defaultValue={profileData?.username || ''}
                                 ref={usernameRef}
-                                onFocus={handleFocus}
                                 onBlur={handleBlur}
                                 onInput={validateInput}
                                 autoComplete="username"
                             />
+                            <label htmlFor="username" className="floating-label">Username</label>
                         </div>
 
-                        <div className="input-group">
-                            <label htmlFor="email">Email account (Read Only)</label>
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">mail</span>
                             <input
                                 type="email"
                                 id="email"
@@ -392,101 +391,104 @@ export default function UserProfile() {
                                 ref={emailRef}
                                 className="disabled-input"
                                 autoComplete="email"
+                                placeholder="email"
                             />
+                            <label htmlFor="email" className="floating-label">Email account (Read Only)</label>
                         </div>
 
-                        <div className="input-group">
-                            <label htmlFor="password">New Password (Optional)</label>
-                            <div className="input-container">
-                                <input
-                                    type={passwordVisible ? "text" : "password"}
-                                    id="password"
-                                    placeholder="Leave blank to keep current"
-                                    ref={passwordRef}
-                                    onFocus={(e) => { handleFocus(e); handlePasswordFocus(); }}
-                                    onBlur={(e) => { handleBlur(e); handlePasswordBlur(); }}
-                                    onInput={validateInput}
-                                    onKeyUp={(e) => updatePasswordCounter(e.target.value)}
-                                    autoComplete="new-password"
-                                />
-                                <button
-                                    type="button"
-                                    className="toggle-password"
-                                    onClick={togglePasswordVisibility}
-                                >
-                                    <span className="material-symbols-outlined">
-                                        {passwordVisible ? "visibility" : "visibility_off"}
-                                    </span>
-                                </button>
-                            </div>
-                            <div className="password-counter" ref={pwdCounterRef} style={{ display: 'none', opacity: 0, transition: 'opacity 0.3s ease' }}>
-                                <span className="counter-item">Char: 0</span>
-                                <span className="counter-item">Upper: 0</span>
-                                <span className="counter-item">Lower: 0</span>
-                                <span className="counter-item">Digit: 0</span>
-                                <span className="counter-item">Special: 0</span>
-                            </div>
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">lock</span>
+                            <input
+                                type={passwordVisible ? "text" : "password"}
+                                id="password"
+                                placeholder="Leave blank to keep current"
+                                ref={passwordRef}
+                                onFocus={handlePasswordFocus}
+                                onBlur={(e) => { handleBlur(e); handlePasswordBlur(); }}
+                                onInput={validateInput}
+                                onKeyUp={(e) => updatePasswordCounter(e.target.value)}
+                                autoComplete="new-password"
+                            />
+                            <label htmlFor="password" className="floating-label">New Password (Optional)</label>
+                            <button
+                                type="button"
+                                className="toggle-password"
+                                onClick={togglePasswordVisibility}
+                            >
+                                <span className="material-symbols-outlined">
+                                    {passwordVisible ? "visibility" : "visibility_off"}
+                                </span>
+                            </button>
+                        </div>
+                        <div className="password-counter" ref={pwdCounterRef} style={{ display: 'none', opacity: 0, transition: 'opacity 0.3s ease' }}>
+                            <span className="counter-item">Char: 0</span>
+                            <span className="counter-item">Upper: 0</span>
+                            <span className="counter-item">Lower: 0</span>
+                            <span className="counter-item">Digit: 0</span>
+                            <span className="counter-item">Special: 0</span>
                         </div>
 
                         <div className="stats-row">
-                            <div className="input-group">
-                                <label htmlFor="weight">Weight (kg)</label>
+                            <div className="floating-input">
+                                <span className="material-symbols-outlined input-icon">weight</span>
                                 <input
                                     type="number"
                                     id="weight"
+                                    placeholder="70"
                                     min="20"
                                     max="200"
                                     required
                                     defaultValue={profileData?.weight || ''}
                                     ref={weightRef}
-                                    onFocus={handleFocus}
                                     onBlur={handleBlur}
                                     onInput={validateInput}
                                 />
+                                <label htmlFor="weight" className="floating-label">Weight (kg)</label>
                             </div>
 
-                            <div className="input-group">
-                                <label htmlFor="height">Height (cm)</label>
+                            <div className="floating-input">
+                                <span className="material-symbols-outlined input-icon">height</span>
                                 <input
                                     type="number"
                                     id="height"
+                                    placeholder="170"
                                     min="50"
                                     max="250"
                                     required
                                     defaultValue={profileData?.height || ''}
                                     ref={heightRef}
-                                    onFocus={handleFocus}
                                     onBlur={handleBlur}
                                     onInput={validateInput}
                                 />
+                                <label htmlFor="height" className="floating-label">Height (cm)</label>
                             </div>
                         </div>
 
                         <div className="stats-row">
-                            <div className="input-group">
-                                <label htmlFor="age">Age</label>
+                            <div className="floating-input">
+                                <span className="material-symbols-outlined input-icon">calendar_month</span>
                                 <input
                                     type="number"
                                     id="age"
+                                    placeholder="25"
                                     min="1"
                                     max="120"
                                     required
                                     defaultValue={profileData?.age || ''}
                                     ref={ageRef}
-                                    onFocus={handleFocus}
                                     onBlur={handleBlur}
                                     onInput={validateInput}
                                 />
+                                <label htmlFor="age" className="floating-label">Age</label>
                             </div>
 
-                            <div className="input-group">
-                                <label htmlFor="gender">Gender</label>
+                            <div className="custom-select-wrapper">
+                                <span className="material-symbols-outlined select-icon">label</span>
                                 <select
                                     id="gender"
                                     required
                                     defaultValue={profileData?.gender || ''}
                                     ref={genderRef}
-                                    onFocus={handleFocus}
                                     onBlur={handleBlur}
                                     onChange={validateInput}
                                 >
@@ -494,6 +496,7 @@ export default function UserProfile() {
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
                                 </select>
+                                <span className="select-label">Gender</span>
                             </div>
                         </div>
 

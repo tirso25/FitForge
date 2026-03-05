@@ -582,7 +582,6 @@ export default function SignIn() {
                 console.log('Remember me activated');
             }
 
-            // Guardar datos del usuario si están disponibles
             if (user_id && username && email) {
                 localStorage.setItem('userData', JSON.stringify({
                     this_user_id: user_id,
@@ -683,42 +682,44 @@ export default function SignIn() {
             <fieldset id="signIn">
                 <form id="signInForm" ref={formRef} onSubmit={handleSubmit}>
                     <div id="content1">
-                        <label htmlFor="signIn_email">Email</label>
-                        <input
-                            type="email"
-                            id="signIn_email"
-                            name="email"
-                            placeholder="email@gmail.com"
-                            required
-                            minLength="5"
-                            maxLength="255"
-                            autoComplete="email"
-                            ref={emailRef}
-                            onFocus={handleFocus}
-                            onBlur={handleBlur}
-                            onInput={validateInput}
-                            onDoubleClick={handleDblClick}
-                        />
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">mail</span>
+                            <input
+                                type="email"
+                                id="signIn_email"
+                                name="email"
+                                placeholder="email@gmail.com"
+                                required
+                                minLength="5"
+                                maxLength="255"
+                                autoComplete="email"
+                                ref={emailRef}
+                                onInput={validateInput}
+                                onDoubleClick={handleDblClick}
+                            />
+                            <label htmlFor="signIn_email" className="floating-label">Email</label>
+                        </div>
 
-                        <label htmlFor="signIn_user_name">Username</label>
-                        <input
-                            type="text"
-                            id="signIn_user_name"
-                            name="username"
-                            placeholder="username"
-                            required
-                            minLength="5"
-                            maxLength="20"
-                            autoComplete="username"
-                            ref={usernameRef}
-                            onFocus={handleFocus}
-                            onBlur={handleBlur}
-                            onInput={validateInput}
-                            onDoubleClick={handleDblClick}
-                        />
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">person</span>
+                            <input
+                                type="text"
+                                id="signIn_user_name"
+                                name="username"
+                                placeholder="username"
+                                required
+                                minLength="5"
+                                maxLength="20"
+                                autoComplete="username"
+                                ref={usernameRef}
+                                onInput={validateInput}
+                                onDoubleClick={handleDblClick}
+                            />
+                            <label htmlFor="signIn_user_name" className="floating-label">Username</label>
+                        </div>
 
-                        <label htmlFor="signIn_password">Password</label>
-                        <div className="input-container">
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">lock</span>
                             <input
                                 type={passwordVisible ? "text" : "password"}
                                 id="signIn_password"
@@ -730,18 +731,13 @@ export default function SignIn() {
                                 autoComplete="new-password"
                                 title="At least 8 characters, including uppercase, lowercase, number, and special character"
                                 ref={passwordRef}
-                                onFocus={(e) => {
-                                    handleFocus(e);
-                                    handlePasswordFocus(countRef);
-                                }}
-                                onBlur={(e) => {
-                                    handleBlur(e);
-                                    handlePasswordBlur(countRef);
-                                }}
+                                onFocus={() => handlePasswordFocus(countRef)}
+                                onBlur={() => handlePasswordBlur(countRef)}
                                 onInput={validateInput}
                                 onKeyUp={(e) => handlePasswordKeyUp(e, countRef)}
                                 onDoubleClick={handleDblClick}
                             />
+                            <label htmlFor="signIn_password" className="floating-label">Password</label>
                             <button
                                 type="button"
                                 className="toggle-password"
@@ -760,8 +756,8 @@ export default function SignIn() {
                             <span className="counter-item">Special: 0</span>
                         </div>
 
-                        <label htmlFor="signIn_repeat_password">Repeat password</label>
-                        <div className="input-container">
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">lock</span>
                             <input
                                 type={repeatPasswordVisible ? "text" : "password"}
                                 id="signIn_repeat_password"
@@ -773,18 +769,13 @@ export default function SignIn() {
                                 autoComplete="new-password"
                                 title="At least 8 characters, including uppercase, lowercase, number, and special character"
                                 ref={repeatPasswordRef}
-                                onFocus={(e) => {
-                                    handleFocus(e);
-                                    handlePasswordFocus(count2Ref);
-                                }}
-                                onBlur={(e) => {
-                                    handleBlur(e);
-                                    handlePasswordBlur(count2Ref);
-                                }}
+                                onFocus={() => handlePasswordFocus(count2Ref)}
+                                onBlur={() => handlePasswordBlur(count2Ref)}
                                 onInput={validateInput}
                                 onKeyUp={(e) => handlePasswordKeyUp(e, count2Ref)}
                                 onDoubleClick={handleDblClick}
                             />
+                            <label htmlFor="signIn_repeat_password" className="floating-label">Repeat password</label>
                             <button
                                 type="button"
                                 className="toggle-password"

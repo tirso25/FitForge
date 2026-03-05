@@ -1,7 +1,3 @@
-/* ══════════════════════════════════════════════════
-   LOGIN — LIQUID GLASS REDESIGN
-══════════════════════════════════════════════════ */
-
 * {
     box-sizing: border-box;
 }
@@ -11,7 +7,6 @@ body {
     position: relative;
 }
 
-/* ── Ambient light blobs ──────────────────────── */
 main::before,
 main::after {
     content: '';
@@ -46,7 +41,6 @@ main::after {
     100% { transform: translate(25px, -15px) scale(1.08); }
 }
 
-/* ── Tarjeta principal (Liquid Glass) ────────── */
 #logIn {
     width: 100%;
     max-width: 400px;
@@ -82,7 +76,6 @@ fieldset {
     animation: cardEntry 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* ── Formulario ────────────────────────────────── */
 form label {
     display: block;
     margin-bottom: 6px;
@@ -119,7 +112,6 @@ form input[type="text"]::placeholder {
     color: #475569;
 }
 
-/* ── Botones de envío ──────────────────────────── */
 form button[type="submit"],
 form .button,
 a.button {
@@ -167,7 +159,6 @@ form button[type="submit"] {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── Login button disabled/error state ─────────── */
 .login-btn:not(.enabled),
 form button[type="submit"]:not(.enabled) {
     background: linear-gradient(135deg, #dc2626, #ef4444) !important;
@@ -180,7 +171,6 @@ form button[type="submit"].enabled {
     box-shadow: 0 4px 14px rgba(59, 130, 246, 0.25) !important;
 }
 
-/* ── Fila de botones ───────────────────────────── */
 #content2 {
     display: flex;
     justify-content: space-between;
@@ -188,7 +178,6 @@ form button[type="submit"].enabled {
     flex-wrap: wrap;
 }
 
-/* ── Input con icono ───────────────────────────── */
 .input-container {
     position: relative;
     width: 100%;
@@ -230,7 +219,6 @@ form button[type="submit"].enabled {
     padding-right: 40px;
 }
 
-/* ── Reglas de validación ──────────────────────── */
 #rules {
     font-size: 80%;
     max-width: 100%;
@@ -260,7 +248,6 @@ form button[type="submit"].enabled {
     border: 1px solid rgba(148, 163, 184, 0.08);
 }
 
-/* ── Opciones (remember me + forgot password) ──── */
 .options-container {
     display: flex;
     justify-content: space-between;
@@ -271,7 +258,6 @@ form button[type="submit"].enabled {
     flex-wrap: wrap;
 }
 
-/* ── Checkbox custom ───────────────────────────── */
 .checkbox-container {
     display: flex;
     align-items: center;
@@ -342,7 +328,6 @@ form button[type="submit"].enabled {
     transform: scale(1.05);
 }
 
-/* ── Enlace "Forgot password" ──────────────────── */
 .forgot-password {
     color: #60a5fa;
     text-decoration: none;
@@ -374,7 +359,6 @@ form button[type="submit"].enabled {
     width: 100%;
 }
 
-/* ── Activate Account link ─────────────────────── */
 .activate-account {
     color: #fbbf24;
     text-decoration: none;
@@ -391,7 +375,6 @@ form button[type="submit"].enabled {
     color: #fcd34d;
 }
 
-/* ── Botón Google (Liquid Glass) ──────────────── */
 .google-login {
     margin-top: 16px;
     text-align: center;
@@ -433,7 +416,6 @@ form button[type="submit"].enabled {
     height: 20px;
 }
 
-/* ── Contador de contraseña ────────────────────── */
 .password-counter {
     padding: 8px 12px;
     margin: 8px 0 15px 0;
@@ -469,7 +451,6 @@ form button[type="submit"].enabled {
     border-color: rgba(239, 68, 68, 0.2);
 }
 
-/* ── Botón TTS ─────────────────────────────────── */
 .tts-btn {
     background: none;
     border: none;
@@ -518,7 +499,6 @@ form button[type="submit"].enabled {
     animation: subtle-highlight 3s infinite;
 }
 
-/* ── Animaciones ───────────────────────────────── */
 @keyframes jelly {
     from  { transform: scale(1, 1); }
     30%   { transform: scale(1.25, 0.75); }
@@ -575,9 +555,6 @@ form button[type="submit"].enabled {
 
 .bounce-animation { animation: gentle-bounce 1.5s ease-in-out infinite; }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE — 520 px
-══════════════════════════════════════════════════ */
 @media (max-width: 520px) {
 
     main::before,
@@ -638,9 +615,6 @@ form button[type="submit"].enabled {
     .tts-btn .material-symbols-outlined { font-size: 16px; }
 }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE — 375 px
-══════════════════════════════════════════════════ */
 @media (max-width: 375px) {
     #logIn {
         padding: 18px 14px;
@@ -679,9 +653,6 @@ form button[type="submit"].enabled {
     }
 }
 
-/* ══════════════════════════════════════════════════
-   RESPONSIVE — 320 px
-══════════════════════════════════════════════════ */
 @media (max-width: 320px) {
     #logIn { padding: 14px 10px; }
     form label { font-size: 12px; }

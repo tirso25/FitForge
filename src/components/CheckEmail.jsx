@@ -42,7 +42,7 @@ export default function CheckEmail() {
         if (!submitButtonRef.current) return;
         if (allRight && status === 'idle') {
             submitButtonRef.current.disabled = false;
-            submitButtonRef.current.style.backgroundColor = ""; // reset inline style
+            submitButtonRef.current.style.backgroundColor = "";
             submitButtonRef.current.classList.add('enabled');
             submitButtonRef.current.style.cursor = "pointer";
         } else {
@@ -158,7 +158,6 @@ export default function CheckEmail() {
                 position: { x: 'right', y: 'top' },
             });
 
-            // Redirect conceptually - can be updated later if needed
             setTimeout(() => {
                 navigate(`/changePassword?email=${encodeURIComponent(email)}`);
             }, 1500);
@@ -195,20 +194,21 @@ export default function CheckEmail() {
             <fieldset id="logIn">
                 <form id="logInForm" ref={formRef} onSubmit={handleSubmit}>
                     <div id="content1">
-                        <label htmlFor="check_email">Enter your Email</label>
-                        <input
-                            type="email"
-                            id="check_email"
-                            placeholder="email@gmail.com/es"
-                            required
-                            maxLength="255"
-                            autoComplete="email"
-                            ref={emailRef}
-                            onFocus={handleFocus}
-                            onBlur={handleBlur}
-                            onDoubleClick={handleDblClick}
-                            onInput={validateInput}
-                        />
+                        <div className="floating-input">
+                            <span className="material-symbols-outlined input-icon">mail</span>
+                            <input
+                                type="email"
+                                id="check_email"
+                                placeholder="email@gmail.com/es"
+                                required
+                                maxLength="255"
+                                autoComplete="email"
+                                ref={emailRef}
+                                onDoubleClick={handleDblClick}
+                                onInput={validateInput}
+                            />
+                            <label htmlFor="check_email" className="floating-label">Enter your Email</label>
+                        </div>
                     </div>
                     <div id="content2">
                         <button

@@ -18,12 +18,8 @@ export default function AI() {
     const [isDisabled, setIsDisabled] = useState(false);
 
     const goToProfile = () => {
-        const navigate = useNavigate(); // This won't work inside the component if not imported
-        // Wait, I need to use useNavigate correctly.
+        const navigate = useNavigate();
     };
-
-    // System prompt is now handled by the backend
-    // The previous frontend calculation of metrics is also handled backward-compatibly, however we keep the definitions just in case it's needed for other parts.
 
     useEffect(() => {
         adjustTextareaHeight();
@@ -48,7 +44,6 @@ export default function AI() {
                     }));
                     setMessages(mappedMessages);
 
-                    // Scroll to bottom after load
                     setTimeout(() => {
                         if (chatMessagesRef.current) {
                             chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
@@ -315,7 +310,6 @@ export default function AI() {
     const clearChat = () => {
         setMessages([]);
         messageInputRef.current?.focus();
-        // Nota: Esto solo limpia el estado local frontend. Para limpiarlo de DB haría falta un un nuevo endpoint DELETE.
     };
 
     const handleInputChange = (e) => {
