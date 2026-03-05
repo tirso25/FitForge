@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { apiFetch } from '../utils/api';
 import { Notyf } from 'notyf';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+
 import 'notyf/notyf.min.css';
 import '../styles/add.css';
 import '../styles/general.css';
@@ -25,6 +26,58 @@ export default function Add() {
     const [loadingCategory, setLoadingCategory] = useState(false);
     const [categoryFormValid, setCategoryFormValid] = useState(false);
     const [loadingCategories, setLoadingCategories] = useState(true);
+
+    // TTS refs for exercise rules
+    const exerciseRulesRef = useRef(null);
+    const exerciseSpeakRef = useRef(null);
+
+    // TTS refs for category rules
+    const categoryRulesRef = useRef(null);
+    const categorySpeakRef = useRef(null);
+
+    // Setup TTS after loading finishes and DOM renders
+    useEffect(() => {
+        if (loadingCategories) return;
+
+        const setupTTS = (btnRef, containerRef) => {
+            const btn = btnRef.current;
+            const container = containerRef.current;
+            if (!btn || !container || !('speechSynthesis' in window)) return;
+
+            let isSpeaking = false;
+
+            const stop = () => {
+                if (isSpeaking) {
+                    window.speechSynthesis.cancel();
+                    isSpeaking = false;
+                    btn.classList.remove('speaking');
+                    btn.innerHTML = '<span class="material-symbols-outlined">volume_up</span>';
+                    container.classList.remove('rules-speaking');
+                }
+            };
+
+            const start = () => {
+                stop();
+                const text = Array.from(container.querySelectorAll('p'))
+                    .map(p => p.textContent).filter(Boolean).join('. ');
+                if (!text.trim()) return;
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.rate = 0.9; utterance.pitch = 1.0; utterance.volume = 0.8; utterance.lang = 'en-US';
+                utterance.onstart = () => { isSpeaking = true; btn.classList.add('speaking'); btn.innerHTML = '<span class="material-symbols-outlined">stop</span>'; container.classList.add('rules-speaking'); };
+                utterance.onend = () => stop();
+                utterance.onerror = () => stop();
+                window.speechSynthesis.speak(utterance);
+            };
+
+            const toggle = () => { if (isSpeaking) stop(); else start(); };
+            btn.addEventListener('click', toggle);
+            return () => { btn.removeEventListener('click', toggle); stop(); };
+        };
+
+        const cleanupEx = setupTTS(exerciseSpeakRef, exerciseRulesRef);
+        const cleanupCat = setupTTS(categorySpeakRef, categoryRulesRef);
+        return () => { cleanupEx?.(); cleanupCat?.(); };
+    }, [loadingCategories]);
 
     const notyf = new Notyf({
         duration: 4000,
@@ -183,6 +236,16 @@ export default function Add() {
                             {/* Panel 1: Exercise */}
                             <div className="swipe-panel">
                                 <fieldset id="checkCode">
+                                        <div className="rules-container" ref={exerciseRulesRef}>
+                                            <div id="rules">
+                                                <p><b>Name</b>: Only letters (A–Z), 3 to 50 characters</p>
+                                                <p><b>Category</b>: Select a category from the list</p>
+                                                <p><b>Description</b>: Optional, max 255 characters</p>
+                                            </div>
+                                            <button className="tts-btn" type="button" ref={exerciseSpeakRef}>
+                                                <span className="material-symbols-outlined">volume_up</span>
+                                            </button>
+                                        </div>
                                     <form onSubmit={handleCreateExercise} className="add-form">
                                         <div className="floating-input">
                                             <span className="material-symbols-outlined input-icon">fitness_center</span>
@@ -254,6 +317,14 @@ export default function Add() {
                             {/* Panel 2: Category */}
                             <div className="swipe-panel">
                                 <fieldset id="checkCode">
+                                        <div className="rules-container" ref={categoryRulesRef}>
+                                            <div id="rules">
+                                                <p><b>Name</b>: Only letters (A–Z), 3 to 50 characters</p>
+                                            </div>
+                                            <button className="tts-btn" type="button" ref={categorySpeakRef}>
+                                                <span className="material-symbols-outlined">volume_up</span>
+                                            </button>
+                                        </div>
                                     <form onSubmit={handleCreateCategory} className="add-form">
                                         <div className="floating-input">
                                             <span className="material-symbols-outlined input-icon">fitness_center</span>

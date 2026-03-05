@@ -15,7 +15,7 @@ const usernameRegex = /^(?![._-])(?!.*[._-]{2})[a-z0-9._-]{5,20}(?<![._-])$/;
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()_+=\-\[\]{};:,.<>])[A-Za-z\d@$!%*?&#^()_+=\-\[\]{};:,.<>]{8,128}$/;
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
 
-export default function SignIn() {
+export default function SignIn({ onLoginSuccess }) {
     const navigate = useNavigate();
     const formRef = useRef(null);
     const emailRef = useRef(null);
@@ -536,7 +536,8 @@ export default function SignIn() {
                     position: { x: 'right', y: 'top' },
                 });
 
-                setTimeout(() => {
+                setTimeout(async () => {
+                    if (onLoginSuccess) await onLoginSuccess();
                     navigate('/AI');
                 }, 1500);
             } catch (error) {
@@ -565,7 +566,7 @@ export default function SignIn() {
         }
     });
 
-    const handleGoogleAuthCallback = () => {
+    const handleGoogleAuthCallback = async () => {
         const urlParams = new URLSearchParams(window.location.search);
         const googleAuth = urlParams.get('google_auth');
         const token = urlParams.get('token');
@@ -604,7 +605,8 @@ export default function SignIn() {
             url.searchParams.delete('email');
             window.history.replaceState({}, document.title, url);
 
-            setTimeout(() => {
+            setTimeout(async () => {
+                if (onLoginSuccess) await onLoginSuccess();
                 navigate('/AI');
             }, 1500);
 

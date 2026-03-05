@@ -69,7 +69,7 @@ function App() {
             <main>
                 <Routes>
                     <Route path="/changePassword" element={<ChangePassword />} />
-                    <Route path="/signIn" element={<SignIn />} />
+                    <Route path="/signIn" element={<SignIn onLoginSuccess={checkAuth} />} />
                     <Route path="/checkCode" element={<CheckCode />} />
                     <Route path="/checkEmail" element={<CheckEmail />} />
 
